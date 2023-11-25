@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
@@ -23,6 +24,7 @@ public class Event {
 
     private LocalDate date;
     private LocalTime time;
+    private Collection<String> tags;
 
     public Event() {
     }
@@ -81,5 +83,13 @@ public class Event {
 
     public void setTime(LocalTime time) {
         this.time = time;
+    }
+
+    public Collection<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(Collection<String> tags) {
+        this.tags = tags;
     }
 }
