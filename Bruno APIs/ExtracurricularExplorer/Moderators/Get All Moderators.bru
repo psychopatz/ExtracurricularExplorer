@@ -1,0 +1,20 @@
+meta {
+  name: Get All Moderators
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/moderators/getAll
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+          "firstName": "Patrick Oliver",
+          "lastName": "Bustamante",
+          "email": "Bpatrickoliverb@gmail.com",
+          "password": "hesoyam"
+  }
+}

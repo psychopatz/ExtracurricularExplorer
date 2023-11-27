@@ -10,4 +10,5 @@ public interface ModeratorService {
     public List<Moderator> getAll();
     public Moderator get(Integer id);
     public void delete(Integer id);
+    public Moderator findByEmail(String email);
 }

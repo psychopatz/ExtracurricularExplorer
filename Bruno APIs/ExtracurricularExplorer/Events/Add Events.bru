@@ -1,0 +1,22 @@
+meta {
+  name: Add Events
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/events/add
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "name":"Kalagkalag",
+      "details":"Budots",
+      "link": "www.cornhub.com",
+      "venue": "tm lounge",
+      "date": "2023-11-24",
+      "time": "13:12:00"
+  }
+}

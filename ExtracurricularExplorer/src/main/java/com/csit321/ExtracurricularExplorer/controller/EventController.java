@@ -1,6 +1,7 @@
 package com.csit321.ExtracurricularExplorer.controller;
 
 import com.csit321.ExtracurricularExplorer.model.Event;
+import com.csit321.ExtracurricularExplorer.model.Moderator;
 import com.csit321.ExtracurricularExplorer.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +53,15 @@ public class EventController {
     }
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Integer id){
-        eventService.delete(id);
-        return "Deleted Event with ID "+id;
+        String message="Event ID:";
+        try{
+            eventService.delete(id);
+            Event event = eventService.get(id);
+            message = message+id+" Deleted Successfully.";
+
+        }catch (NoSuchElementException e){
+            message = message+id+" doesn't exist.";
+        }
+        return message;
     }
 }

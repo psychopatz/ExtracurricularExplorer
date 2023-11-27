@@ -1,0 +1,23 @@
+meta {
+  name: Modify Event
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:8080/events/2
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "id":"2",
+      "name":"DiskoDisko",
+      "details":"Budots",
+      "link": "www.cornhub.com",
+      "venue": "tm lounge",
+      "date": "2023-11-24",
+      "time": "10:12:03"
+  }
+}

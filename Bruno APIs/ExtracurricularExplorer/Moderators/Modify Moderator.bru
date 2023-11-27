@@ -1,0 +1,21 @@
+meta {
+  name: Modify Moderator
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:8080/moderators/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+          "id": 1,
+          "firstName": "Patrick Oliver",
+          "lastName": "Bustamante",
+          "email": "Bpatrickoliverb@gmail.com",
+          "password": "hesoyami"
+  }
+}

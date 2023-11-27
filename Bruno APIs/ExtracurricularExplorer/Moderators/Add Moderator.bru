@@ -1,0 +1,20 @@
+meta {
+  name: Add Moderator
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://127.0.0.1:8080/moderators/add
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "firstName": "Patrick Oliver",
+    "lastName": "Bustamante",
+    "email": "Bpatrickoliverb@gmail.com",
+    "password": "hesoyam"
+  }
+}

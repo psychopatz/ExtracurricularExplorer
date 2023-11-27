@@ -1,9 +1,6 @@
 package com.csit321.ExtracurricularExplorer.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
 @Entity
@@ -11,10 +8,13 @@ public class Moderator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name="firstName",length = 15, nullable = false)
     private String firstName;
+    @Column(name="lastName",length = 15, nullable = false)
     private String lastName;
+    @Column(name="email",length = 30,unique = true, nullable = false)
     private String email;
-
+    @Column(name="password",length = 30, nullable = false)
     private String password;
 
     public Moderator(){

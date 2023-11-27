@@ -13,6 +13,7 @@ public class ModeratorServiceImpl implements ModeratorService{
 
     @Autowired
     private ModeratorRepository moderatorRepository;
+
     @Override
     public Moderator save(Moderator moderator) {
         return moderatorRepository.save(moderator);
@@ -31,6 +32,10 @@ public class ModeratorServiceImpl implements ModeratorService{
     @Override
     public void delete(Integer id) {
         moderatorRepository.deleteById(id);
+    }
 
+    @Override
+    public Moderator findByEmail(String email) {
+        return moderatorRepository.findByEmail(email);
     }
 }

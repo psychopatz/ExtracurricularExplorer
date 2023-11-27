@@ -51,7 +51,15 @@ public class ModeratorController {
     }
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Integer id){
-        moderatorService.delete(id);
-        return "Deleted User with ID "+id;
+        String message="Moderator ID:";
+        try{
+            moderatorService.delete(id);
+            Moderator moderator = moderatorService.get(id);
+            message = message+id+" Deleted Successfully.";
+
+        }catch (NoSuchElementException e){
+            message = message+id+" doesn't exist.";
+        }
+        return message;
     }
 }

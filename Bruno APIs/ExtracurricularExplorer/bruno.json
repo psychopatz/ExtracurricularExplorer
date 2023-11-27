@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "ExtracurricularExplorer",
+  "type": "collection",
+  "presets": {
+    "requestType": "http",
+    "requestUrl": "127.0.0.1:8080"
+  }
+}
