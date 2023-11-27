@@ -1,0 +1,19 @@
+meta {
+  name: Check Health
+  type: http
+  seq: 8
+}
+
+get {
+  url: http:/
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  " { \"input\": \"string\" } "
+}
