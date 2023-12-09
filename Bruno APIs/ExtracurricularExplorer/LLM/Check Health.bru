@@ -5,15 +5,11 @@ meta {
 }
 
 get {
-  url: http:/
+  url: http://127.0.0.1:8001/health
   body: json
   auth: none
 }
 
 headers {
   Content-Type: application/json
-}
-
-body:json {
-  " { \"input\": \"string\" } "
 }

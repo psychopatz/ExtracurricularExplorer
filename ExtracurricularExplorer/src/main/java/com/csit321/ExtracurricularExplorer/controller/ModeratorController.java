@@ -53,8 +53,8 @@ public class ModeratorController {
     public String delete(@PathVariable Integer id){
         String message="Moderator ID:";
         try{
-            moderatorService.delete(id);
             Moderator moderator = moderatorService.get(id);
+            moderatorService.delete(id);
             message = message+id+" Deleted Successfully.";
 
         }catch (NoSuchElementException e){

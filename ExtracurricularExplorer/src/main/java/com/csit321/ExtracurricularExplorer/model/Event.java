@@ -4,12 +4,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 
+@Getter
 @Entity
 public class Event {
 
@@ -17,76 +19,44 @@ public class Event {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    private String banner;
     private String details;
-    private String link;
-
+    private int eventDataID;
     private String venue;
-
     private LocalDate date;
     private LocalTime time;
     private Collection<String> tags;
 
-    public Event() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getDetails() {
-        return details;
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 
     public void setDetails(String details) {
         this.details = details;
     }
 
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getVenue() {
-        return venue;
+    public void setEventDataID(int eventDataID) {
+        this.eventDataID = eventDataID;
     }
 
     public void setVenue(String venue) {
         this.venue = venue;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public LocalTime getTime() {
-        return time;
-    }
-
     public void setTime(LocalTime time) {
         this.time = time;
-    }
-
-    public Collection<String> getTags() {
-        return tags;
     }
 
     public void setTags(Collection<String> tags) {
