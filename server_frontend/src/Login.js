@@ -1,5 +1,8 @@
 import { Typography, Box,styled, Paper, Button, TextField} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BarComponent from "./component/BarComponent";
+import useGet from "./hooks/useGet";
 import bgLogin from './resources/img/bgLogin.png';
 import logo from './resources/img/cit-logo.png';
 import schPlaceholder from './resources/img/loginCit.png';
@@ -33,7 +36,74 @@ const Img = styled(Box)(() =>({
     width: "100%",
     height: "100%",
 }))
+
+
+
 const Login = () => {
+    
+//Variables
+    const [err, setErr] = useState('');
+    const navigate = useNavigate();
+
+    const [email,setEmail] = useState(null);
+    const [password,setPassword] = useState(null);
+
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+        console.log(email);
+  };
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+        console.log(password);
+  };
+
+  const validateInputs = () => {
+    // use a regular expression to check if the email is a valid email address
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailValid = emailRegex.test(email);
+    const passwordValid = password.length >= 8;
+    return emailValid && passwordValid;
+  };
+  const navigateToHome = () => {
+    navigate("/");
+  }
+
+  const isLoggedin = () => {
+    if( window.localStorage.getItem("loginSession") !=null ){
+        navigateToHome();
+    }
+
+  }
+  isLoggedin();
+
+const {content, isPending, error} = useGet("/login/verify?email="+email+"&password="+password);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const valid = validateInputs();
+    if (valid) {
+      // update the email and password variables with the state values
+      // you can use any logic you want to store or send the data
+      // for example, you can use localStorage, sessionStorage, or axios
+     
+      console.log(content)
+      window.localStorage.setItem("loginSession",content);
+      navigateToHome();
+      // redirect to another page using the history object
+      // you can use any path you want, but make sure it exists in your router
+      //history.push('/home');
+    } else {
+      // if the result is false, show an error message to the user
+      setErr('Invalid email or password');
+      setEmail("");
+      setPassword("");
+    }
+  };
+
+
+ 
+
     return ( 
         <>
         <BarComponent />
@@ -101,11 +171,29 @@ const Login = () => {
                     flexDirection: "column",
                     gap: "160px",
                 }}>
+                    <Typography sx={{
+                    paddingTop: "4%",
+                    textAlign: "center",
+                    fontSize: 30,
+                    color: 'red'
+
+
+                }}>
+                    {err}
+                </Typography>
+                <form sx={{
+                    padding:"40%",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "160px",
+                }}></form>
                 {/* Create the input box for the login */}
                 <TextField
+                    name="password"
                     type="email"
                     label="Login"
                     variant="filled"
+                    onChange={handleEmailChange}
                     sx={{
                         width: "80%",
                         padding: "10%"
@@ -114,9 +202,11 @@ const Login = () => {
                 />
                 {/* Create the input box for the password */}
                 <TextField
+                    name="password"
                     type="password"
                     label="Password"
                     variant="filled"
+                    onChange={handlePasswordChange}
                     sx={{
                         width: "80%",
                         padding: "10%"
@@ -128,6 +218,7 @@ const Login = () => {
                     type="submit"
                     variant="contained"
                     color="primary"
+                    onClick={handleSubmit}
                     sx={{
                         left:"38%",
                         paddingLeft:"10%",
