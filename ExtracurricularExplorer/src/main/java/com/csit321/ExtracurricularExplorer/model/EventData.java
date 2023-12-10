@@ -1,9 +1,6 @@
 package com.csit321.ExtracurricularExplorer.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -16,7 +13,10 @@ public class EventData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int eventID;
+
+    @Column(columnDefinition="LONGBLOB")
     private String content;
+
     private Collection<String> images;
     private LocalDate dateModified;
     private int recentAuthor;

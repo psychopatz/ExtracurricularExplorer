@@ -3,11 +3,9 @@ package com.csit321.ExtracurricularExplorer.controller;
 import com.csit321.ExtracurricularExplorer.model.Moderator;
 import com.csit321.ExtracurricularExplorer.service.ModeratorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/login")
 public class LoginController {

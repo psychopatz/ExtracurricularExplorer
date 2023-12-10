@@ -1,9 +1,6 @@
 package com.csit321.ExtracurricularExplorer.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -20,7 +17,9 @@ public class Event {
     private int id;
     private String name;
     private String banner;
+    @Column(columnDefinition="LONGBLOB")
     private String details;
+    
     private int eventDataID;
     private String venue;
     private LocalDate date;

@@ -84,8 +84,6 @@ const  Navbar = () => {
                         <NavButton 
                         component={NavLink}
                         to={item.path}
-                        exact
-                        activeClassName="active"
                         variant="text"
                         key={item.text}
                         onClick= {() => navigate(item.path)}

@@ -5,29 +5,34 @@ import Organization from './Organization';
 import Event from './Event';
 import Faq from './Faq';
 import Error from './Error';
-import Layout from './component/Layout';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import Login from './Login';
+import NavCheck from './component/NavCheck';
 
 function App() {
+
+  
+
   return (
+    <>
     <Router>
-      <Navbar/>
-      <Layout>
-        
+      <NavCheck>
+        <Navbar />
+      </NavCheck>
       <Routes>
         <Route exact path="/" element = {<Home/>}/>
         <Route path="/About" element = {<About/>}/>
         <Route path="/Organization" element = {<Organization/>}/>
         <Route path="/Events" element = {<Event/>}/>
         <Route path="/Faqs" element = {<Faq/>}/>
+        <Route path="/Login" element = {<Login/>}/>
         <Route path="*" element={<Error/>}/>
       </Routes>
-      </Layout>
       <Footer/>
     
     </Router>
-
+</>
 
   );
 }

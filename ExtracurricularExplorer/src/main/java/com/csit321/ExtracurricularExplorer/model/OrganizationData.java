@@ -1,9 +1,6 @@
 package com.csit321.ExtracurricularExplorer.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.util.Collection;
@@ -15,7 +12,10 @@ public class OrganizationData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int orgID;
+
+    @Column(columnDefinition="LONGBLOB")
     private String orgDetails;
+
     private String orgProcess;
     private String orgRegisterLink;
     private String orgBanner;

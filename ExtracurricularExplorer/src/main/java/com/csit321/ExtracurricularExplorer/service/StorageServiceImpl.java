@@ -18,7 +18,7 @@ import java.util.Optional;
 public class StorageServiceImpl implements StorageService {
 
     @Autowired
-    private StorageRepository repository;
+    private StorageRepository storageRepository;
 
     @Autowired
     private FileDataRepository fileDataRepository;
@@ -30,7 +30,7 @@ public class StorageServiceImpl implements StorageService {
         if (fileDataRepository.findByName(file.getOriginalFilename()).isPresent()){
             return "Error Filename Already Exist : " + file.getOriginalFilename();
         }
-        ImageData imageData = repository.save(ImageData.builder()
+        ImageData imageData = storageRepository.save(ImageData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
                 .imageData(ImageUtils.compressImage(file.getBytes())).build());
@@ -43,7 +43,7 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     public byte[] downloadImage(String fileName) {
-        Optional<ImageData> dbImageData = repository.findByName(fileName);
+        Optional<ImageData> dbImageData = storageRepository.findByName(fileName);
         byte[] images = ImageUtils.decompressImage(dbImageData.get().getImageData());
         return images;
     }
