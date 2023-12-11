@@ -9,6 +9,9 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import Login from './Login';
 import NavCheck from './component/NavCheck';
+import Logout from './Logout';
+import Signup from './Signup';
+import Account from './Account';
 
 function App() {
 
@@ -22,11 +25,14 @@ function App() {
       </NavCheck>
       <Routes>
         <Route exact path="/" element = {<Home/>}/>
-        <Route path="/About" element = {<About/>}/>
-        <Route path="/Organization" element = {<Organization/>}/>
-        <Route path="/Events" element = {<Event/>}/>
-        <Route path="/Faqs" element = {<Faq/>}/>
-        <Route path="/Login" element = {<Login/>}/>
+        <Route path="/about" element = {<About/>}/>
+        <Route path="/account" element = {<Account/>}/>
+        <Route path="/organization" element = {<Organization/>}/>
+        <Route path="/events" element = {<Event/>}/>
+        <Route path="/faqs" element = {<Faq/>}/>
+        <Route path="/login" element = {<Login/>}/>
+        <Route path="/logout" element = {<Logout/>}/>
+        <Route path="/signUp" element = {<Signup/>}/>
         <Route path="*" element={<Error/>}/>
       </Routes>
       <Footer/>

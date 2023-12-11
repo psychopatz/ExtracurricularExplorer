@@ -2,8 +2,10 @@ package com.csit321.ExtracurricularExplorer.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
+@Setter
 @Getter
 @Entity
 public class Moderator {
@@ -25,27 +27,4 @@ public class Moderator {
 
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
-    }
 }

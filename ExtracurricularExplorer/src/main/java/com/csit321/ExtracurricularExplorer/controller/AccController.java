@@ -23,7 +23,19 @@ public class AccController {
         return "New Account Successfully added";
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Moderator> get(@PathVariable Integer id){
+        try{
+            Moderator moderator = moderatorService.get(id);
+            return  new ResponseEntity<Moderator>(moderator, HttpStatus.OK);
+
+        }catch (NoSuchElementException e){
+            return new ResponseEntity<Moderator>(HttpStatus.NOT_FOUND);
+
+        }
+    }
+
+    @PutMapping("/user/{id}")
     public ResponseEntity<Moderator> update(@RequestBody Moderator moderator, @PathVariable Integer id){
         try{
             Moderator existingModerator = moderatorService.get(id);
@@ -36,7 +48,7 @@ public class AccController {
 
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     public String delete(@PathVariable Integer id){
         String message="Moderator ID:";
         try{

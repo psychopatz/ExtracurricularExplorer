@@ -1,8 +1,9 @@
 import { Typography, Box,styled, Paper, Button, TextField} from "@mui/material";
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BarComponent from "./component/BarComponent";
-import useGet from "./hooks/useGet";
+import IsLoggedIn from "./util/IsLoggedIn";
 import bgLogin from './resources/img/bgLogin.png';
 import logo from './resources/img/cit-logo.png';
 import schPlaceholder from './resources/img/loginCit.png';
@@ -40,68 +41,92 @@ const Img = styled(Box)(() =>({
 
 
 const Login = () => {
-    
+
 //Variables
-    const [err, setErr] = useState('');
     const navigate = useNavigate();
+    const [err, setErr] = useState('');
+    const [trigger,setTrigger] = useState(false);
+    let [data, setData] = useState({
+        email: "",
+        password: "",
+    })
 
-    const [email,setEmail] = useState(null);
-    const [password,setPassword] = useState(null);
+    
+    const handle = (e)=>{
+        const newData = {...data};
+        newData[e.target.id] = e.target.value;
+        setData(newData);
 
-    const handleEmailChange = (event) => {
-        setEmail(event.target.value);
-        console.log(email);
-  };
-
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
-        console.log(password);
-  };
+    };
 
   const validateInputs = () => {
     // use a regular expression to check if the email is a valid email address
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    const emailValid = emailRegex.test(email);
-    const passwordValid = password.length >= 8;
+    const emailValid = emailRegex.test(data.email);
+    const passwordValid = data.password.length >= 8;
     return emailValid && passwordValid;
   };
-  const navigateToHome = () => {
-    navigate("/");
-  }
 
-  const isLoggedin = () => {
-    if( window.localStorage.getItem("loginSession") !=null ){
-        navigateToHome();
+    
+    useEffect(() => {
+    if (IsLoggedIn()) {
+      navigate("/")
     }
+    }, [trigger]);
 
-  }
-  isLoggedin();
+    useEffect(() => {
+        fetchData();
+        setTrigger(false)
+    }, [trigger]);
 
-const {content, isPending, error} = useGet("/login/verify?email="+email+"&password="+password);
+    const fetchData = async () => {
+    const options = {
+      method: 'POST',
+      url: 'http://127.0.0.1:8080/login/verify',
+      data: { email: data.email, password: data.password},
+    };
+
+    try {
+      const { data } = await axios.request(options);
+      console.log("data:"+data);
+      if(data>0){
+            window.localStorage.setItem("loginSession", JSON.stringify(data));
+            
+      }else if (data === -1 && trigger){
+        setErr("User Not Found")
+      }else if (data === -2){
+        setErr("Invalid Password")
+      }
+      
+    } catch (error) {
+      console.error("error:"+error);
+    }
+  };
+
+  
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setErr("");
+    
     const valid = validateInputs();
+   
     if (valid) {
-      // update the email and password variables with the state values
-      // you can use any logic you want to store or send the data
-      // for example, you can use localStorage, sessionStorage, or axios
-     
-      console.log(content)
-      window.localStorage.setItem("loginSession",content);
-      navigateToHome();
-      // redirect to another page using the history object
-      // you can use any path you want, but make sure it exists in your router
-      //history.push('/home');
-    } else {
-      // if the result is false, show an error message to the user
-      setErr('Invalid email or password');
-      setEmail("");
-      setPassword("");
+        setTrigger(true);
+    }
+    else{
+        setData({
+        email: "",
+        password: "",
+
+    })
+    
     }
   };
 
 
+    
  
 
     return ( 
@@ -128,7 +153,7 @@ const {content, isPending, error} = useGet("/login/verify?email="+email+"&passwo
                 width: "35%",
                 height: "32%",
                 zIndex: 100,
-                bottom:"30%",
+                bottom:"40%",
                 left: "10%"
             }}
         >
@@ -181,35 +206,44 @@ const {content, isPending, error} = useGet("/login/verify?email="+email+"&passwo
                 }}>
                     {err}
                 </Typography>
-                <form sx={{
-                    padding:"40%",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "160px",
+                <form
+                    sx={{
+                        padding:"40%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "160px",
                 }}></form>
                 {/* Create the input box for the login */}
                 <TextField
-                    name="password"
+                    id="email"
+                    name="email"
                     type="email"
-                    label="Login"
+                    label="Email:"
                     variant="filled"
-                    onChange={handleEmailChange}
+                    onChange={(e) => handle(e)}
                     sx={{
                         width: "80%",
-                        padding: "10%"
+                        padding: "10%",
+                        input: {
+                                    background: "white"
+                            }
                         
                     }}
                 />
                 {/* Create the input box for the password */}
                 <TextField
+                    id="password"
                     name="password"
                     type="password"
-                    label="Password"
+                    label="Password:"
                     variant="filled"
-                    onChange={handlePasswordChange}
+                    onChange={(e) => handle(e)}
                     sx={{
                         width: "80%",
-                        padding: "10%"
+                        padding: "10%",
+                        input: {
+                                    background: "white"
+                            }
                         
                     }}
                 />
@@ -236,7 +270,9 @@ const {content, isPending, error} = useGet("/login/verify?email="+email+"&passwo
                     }}>
                     Forgot Password?
                 </Typography>
-                <Typography sx={{
+                <Typography 
+                    onClick={()=>(navigate("/Signup"))}
+                    sx={{
                         right:"10%",
                         paddingLeft:"35%"
 

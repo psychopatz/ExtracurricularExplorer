@@ -1,6 +1,8 @@
 import { NavLink,useNavigate  } from "react-router-dom";
 import logo from './resources/img/cit-logo.png';
 import { AppBar, Box, Button, ButtonGroup, Toolbar,styled } from "@mui/material";
+import IsLoggedIn from "./util/IsLoggedIn";
+import NavDropdown from "./component/NavDropdown";
 
 
 
@@ -36,28 +38,30 @@ const NavButtonGroup = styled(ButtonGroup)(()=>({
     
 const  Navbar = () => {
     const navigate = useNavigate();
-    const menuItems = [
+    let menuItems = [
         {
         text: "Home",
         path: "/"
         },
         {
         text: "About",
-        path: "/About"
+        path: "/about"
         },
         {
         text: "Organizations",
-        path: "/Organization"
+        path: "/organization"
         },
         {
         text: "Events",
-        path: "/Events"
+        path: "/events"
         },
         {
         text: "Faqs",
-        path: "/Faqs"
+        path: "/faqs"
         }
     ]
+
+    
     
     
 
@@ -76,6 +80,7 @@ const  Navbar = () => {
                     component="img"
                     alt="CIT Logo"
                     src={logo}
+                    
                     />
 
                 
@@ -90,9 +95,9 @@ const  Navbar = () => {
                         >
                             {item.text}                           
                         </NavButton>
-
                     ))}
                 </NavButtonGroup>
+                <NavDropdown />
                 </Toolbar>
 
             </AppBar>

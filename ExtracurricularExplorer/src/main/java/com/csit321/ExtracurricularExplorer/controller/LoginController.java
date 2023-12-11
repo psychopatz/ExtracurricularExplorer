@@ -12,20 +12,28 @@ public class LoginController {
     @Autowired
     private ModeratorService moderatorService;
 
-    @GetMapping(path = "/verify")
-    Integer moderatorId (@RequestParam String email, @RequestParam String password) {
-        Moderator data = moderatorService.findByEmail(email);
-        int moderatorId = -1;
+    @PostMapping(path = "/verify")
+    String moderatorId (@RequestBody Moderator moderator) {
+        int moderatorCurrentId = -1; // Not Found
+        Moderator data = moderatorService.findByEmail(moderator.getEmail());
+
         if(data!= null){
-            if(password.equals(data.getPassword())){
-                moderatorId = data.getId();
-                System.out.println("FOOTA");
+            System.out.println("Moderator:");
+            System.out.println(moderator.getEmail());
+            System.out.println(data.getPassword());
+            System.out.println(data.getId());
+            moderatorCurrentId = -2; //Invalid Password
+            System.out.println(moderator.getPassword().equals(data.getPassword()));
+            if(moderator.getPassword().equals(data.getPassword())){
+                moderatorCurrentId = data.getId();
+
             }
-            System.out.println("enamo");
+
         }
-        System.out.println("FOOTAMo");
-        return moderatorId;
+        System.out.println("output = "+moderatorCurrentId);
+        return String.valueOf(moderatorCurrentId);
     }
+
 
 }
 
