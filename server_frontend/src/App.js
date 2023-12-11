@@ -5,11 +5,11 @@ import Organization from './Organization';
 import Event from './Event';
 import Faq from './Faq';
 import Error from './Error';
-import Navbar from './Navbar';
-import Footer from './Footer';
+import Navbar from './component/Navbar';
+import Footer from './component/Footer';
 import Login from './Login';
 import NavCheck from './component/NavCheck';
-import Logout from './Logout';
+import Logout from './util/Logout';
 import Signup from './Signup';
 import Account from './Account';
 
