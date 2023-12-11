@@ -4,11 +4,8 @@ import { useLocation } from "react-router-dom";
 
 const  NavCheck = ({children}) => {
     const location = useLocation()
-    const hideNavbar = location.pathname === '/Login' || location.pathname === '/Signup';
-    console.log("Location");
-    console.log(location);
-    console.log("ifHideNavBar")
-    console.log(hideNavbar);
+    const hideNavbar = location.pathname === '/login' || location.pathname === '/signup';
+
     return ( 
         
         <Box>

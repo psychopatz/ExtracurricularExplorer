@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class StorageServiceImpl implements StorageService {
@@ -53,7 +54,9 @@ public class StorageServiceImpl implements StorageService {
     public String uploadImageToFileSystem(MultipartFile file) throws IOException {
         if (fileDataRepository.findByName(file.getOriginalFilename()).isPresent()){
             System.out.println("Found");
-            return "Error Filename Already Exist : " + file.getOriginalFilename();
+            String newFilename = generateUniqueFilename(file.getOriginalFilename());
+            return uploadImageInternal(file, newFilename);
+
         }
         System.out.println(fileDataRepository.findByName(file.getOriginalFilename()).isPresent());
         System.out.println(file.getOriginalFilename());
@@ -67,10 +70,12 @@ public class StorageServiceImpl implements StorageService {
         file.transferTo(new File(filePath));
 
         if (fileData != null) {
-            return "file uploaded successfully : " + filePath;
+            return "file uploaded successfully : " + file.getOriginalFilename();
         }
         return null;
     }
+
+
 
     @Override
     public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
@@ -79,4 +84,29 @@ public class StorageServiceImpl implements StorageService {
         byte[] images = Files.readAllBytes(new File(filePath).toPath());
         return images;
     }
+
+    private String generateUniqueFilename(String originalFilename) {
+        // Generate a unique filename using UUID
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        return UUID.randomUUID().toString() + extension;
+    }
+
+    private String uploadImageInternal(MultipartFile file, String filename) throws IOException {
+        System.out.println(fileDataRepository.findByName(file.getOriginalFilename()).isPresent());
+        System.out.println(file.getOriginalFilename());
+        System.out.println("uploadedFileName");
+        String filePath = FOLDER_PATH + filename;
+        FileData fileData = fileDataRepository.save(FileData.builder()
+                .name(filename)
+                .type(file.getContentType())
+                .filePath(filePath).build());
+
+        file.transferTo(new File(filePath));
+
+        if (fileData != null) {
+            return "file uploaded successfully : " + filename;
+        }
+        return null;
+    }
+
 }

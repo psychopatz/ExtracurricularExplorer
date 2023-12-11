@@ -1,6 +1,7 @@
 import BoxContainer from "./component/BoxContainer";
 import { Box, Button } from "@mui/material";
 import useGet from "./hooks/useGet";
+import SetOption from "./util/SetOption";
 
 const About = () => {
     const {content, isPending, error} = useGet("/data/get/about");
