@@ -1,27 +1,10 @@
-import React, { useState } from 'react';
 import axios from 'axios';
-import Button from '@mui/material/Button';
-import { LinearProgress } from '@mui/material';
 
-const ImageUpload = () => {
-  const [file, setFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [isUploading, setIsUploading] = useState(false);
-  const [fileName, setFileName] = useState('');
-  const [resp,setResp] = useState("")
-
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
-    setFile(selectedFile);
-    setFileName(selectedFile ? selectedFile.name : '');
-  };
-
-  const handleUpload = async () => {
+const uploadImage = (fileData, onUploadProgress) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      setIsUploading(true);
-
-      let formData = new FormData();
-      formData.append('image', file);
+      const formData = new FormData();
+      formData.append('image', fileData);
 
       const response = await axios.post('http://127.0.0.1:8080/image/fileSystem', formData, {
         headers: {
@@ -29,41 +12,26 @@ const ImageUpload = () => {
         },
         onUploadProgress: (progressEvent) => {
           const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          setUploadProgress(percentCompleted);
+          console.log('Upload progress:', percentCompleted + '%');
+
+          // Additional logging for progressEvent properties kay kapoyg debug
+          console.log('loaded:', progressEvent.loaded);
+          console.log('total:', progressEvent.total);
+          
+          onUploadProgress(progressEvent); // Log the progress inside the function
         },
       });
 
-      console.log('Image uploaded successfully:', response.data);
-      setResp(response);
-      console.log(resp)
-      console.log(response);
+      const responseData = response.data;
+      console.log(responseData)
+      responseData = responseData.replace('file uploaded successfully : ', '')
+      console.log("Filedata:", fileData);
+      console.log("onUploadProg:", onUploadProgress); 
+      resolve(responseData);
     } catch (error) {
-      console.error('Error uploading image:', error);
-    } finally {
-      setIsUploading(false);
+      reject(error);
     }
-  };
-
-  return (
-    <div>
-      <LinearProgress variant="determinate" value={uploadProgress} sx={{ width: 'auto' }} />
-      <Button
-        variant="contained"
-        component="label"
-        onClick={handleUpload}
-        disabled={isUploading}
-      >
-        {isUploading ? 'Uploading...' : 'Upload File'}
-        <input type="file" hidden onChange={handleFileChange} />
-      </Button>
-      <p>Selected file: {fileName}</p>
-      <p>Uploaded File: {()=>{
-        if(resp){
-          String(resp.data).replace("Uploaded File: file uploaded successfully : ","")
-        }
-      }}</p>
-    </div>
-  );
+  });
 };
 
-export default ImageUpload;
+export default uploadImage;
