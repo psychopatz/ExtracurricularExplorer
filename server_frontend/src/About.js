@@ -4,6 +4,8 @@ import useGet from "./hooks/useGet";
 import SetOption from "./util/SetOption";
 
 const About = () => {
+    document.title =  'About';
+
     const {content, isPending, error} = useGet("/data/get/about");
     
     return ( 
