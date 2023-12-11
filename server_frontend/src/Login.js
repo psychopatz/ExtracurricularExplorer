@@ -41,6 +41,7 @@ const Img = styled(Box)(() =>({
 
 
 const Login = () => {
+    document.title =  'Moderator Login ';
 
 //Variables
     const navigate = useNavigate();
@@ -60,6 +61,7 @@ const Login = () => {
     };
 
   const validateInputs = () => {
+    document.title =  'Login';
     // use a regular expression to check if the email is a valid email address
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const emailValid = emailRegex.test(data.email);
