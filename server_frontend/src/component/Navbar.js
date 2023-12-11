@@ -75,7 +75,7 @@ const  Navbar = () => {
                 scrollPaddingBottom: 0
             }}>
                 <Toolbar color="primary">
-                    <NavBox
+                    <NavBox     
                     component="img"
                     alt="CIT Logo"
                     src={logo}
@@ -85,7 +85,7 @@ const  Navbar = () => {
                 
                 <NavButtonGroup>
                     {menuItems.map(item => (
-                        <NavButton 
+                        <NavButton kja
                         component={NavLink}
                         to={item.path}
                         variant="text"
