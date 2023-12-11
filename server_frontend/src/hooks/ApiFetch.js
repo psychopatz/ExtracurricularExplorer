@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const ApiFetch = ({ url, method = 'GET', data = null, children }) => {
+const ApiFetch = ({ url, method = 'GET', data = null, onDataFetched, children }) => {
   const [responseData, setResponseData] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const source = axios.CancelToken.source();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -12,23 +14,33 @@ const ApiFetch = ({ url, method = 'GET', data = null, children }) => {
           method,
           url,
           data,
+          cancelToken: source.token,
         });
 
         setResponseData(response.data);
         setLoading(false);
+
+        // Call the callback function with the fetched data
+        if (onDataFetched) {
+          onDataFetched(response.data);
+        }
       } catch (error) {
-        console.error('Error:', error);
-        setLoading(false);
+        if (axios.isCancel(error)) {
+          console.log('Request canceled:', error.message);
+        } else {
+          console.error('Error:', error);
+          setLoading(false);
+        }
       }
     };
 
     fetchData(); // Call the function when the component mounts
 
-    // If you need to clean up (e.g., cancel the request) when the component unmounts, return a cleanup function
+    // Cleanup function: Cancel the request when the component unmounts
     return () => {
-      // Your cleanup logic here, if needed
+      source.cancel('Request canceled due to component unmount');
     };
-  }, [url, method, data]); // Re-run effect when url, method, or data change
+  }, [url, method, data, onDataFetched]); // Re-run effect when url, method, data, or onDataFetched change
 
   return (
     <div>
