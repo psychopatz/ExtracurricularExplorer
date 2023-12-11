@@ -1,0 +1,19 @@
+meta {
+  name: Update About
+  type: http
+  seq: 2
+}
+
+put {
+  url: http://127.0.0.1:8080/data/update/about
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id":1,
+    "type":"about",
+    "content": " Discover a vibrant and diverse campus life through the Student Organization Explorer—a gateway to a world of opportunities, events, and communities that will enrich your university experience. Whether you're a freshman eager to immerse yourself in college life or a seasoned student seeking to broaden your horizons, our platform is your guide to a journey of discovery and connection. Within this space, explore a comprehensive directory featuring student organizations, clubs, and societies catering to a broad spectrum of interests, from academic and professional pursuits to hobbies and causes close to your heart. With just a few clicks, delve into these diverse groups, learn about their missions, and connect with like-minded peers who share your passions. Designed to facilitate navigation through the rich tapestry of campus extracurricular activities, our website fosters personal growth, leadership development, and a strong sense of community. Whether you aspire to join a club, attend events, or even establish your own organization, we provide the tools and resources to turn your ambitions into reality. Embark on this thrilling journey of exploration, discovery, and personal growth with us. The Student Organization Explorer serves as your compass to campus life, enabling you to create unforgettable memories, form lifelong friendships, and make the most of your university experience. Join us in this adventure without further delay! "
+  }
+}

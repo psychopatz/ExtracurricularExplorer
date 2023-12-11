@@ -1,0 +1,19 @@
+meta {
+  name: Upload Image
+  type: http
+  seq: 2
+}
+
+post {
+  url: 127.0.0.1:8080/image
+  body: formUrlEncoded
+  auth: none
+}
+
+body:form-urlencoded {
+  : 
+}
+
+body:multipart-form {
+  image: 
+}

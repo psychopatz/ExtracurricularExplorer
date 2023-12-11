@@ -1,0 +1,20 @@
+meta {
+  name: Account Add
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1:8080/account/add
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "firstName": "Patrick Oliver",
+    "lastName": "Bustamante",
+    "email": "Bpatrickoliverb@gmail.com",
+    "password": "hesoyamis"
+  }
+}
