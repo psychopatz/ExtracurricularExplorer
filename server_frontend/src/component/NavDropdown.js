@@ -9,6 +9,8 @@ import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
 import IsLoggedIn from '../util/IsLoggedIn';
 import { useNavigate } from 'react-router-dom';
+import { Avatar } from '@mui/material';
+import { Box } from '@mui/system';
 
 const NavDropdown = () => {
   const [open, setOpen] = useState(false);
@@ -56,6 +58,9 @@ const NavDropdown = () => {
     prevOpen.current = open;
   }, [open]);
 
+  const isPicPresent = false;
+  const photoUrl = "http://127.0.0.1:8080/image/fileSystem/5b4b2fdd-24d7-4168-a4ff-5adb696a64eb.jpg"
+
   if(!IsLoggedIn()){
     return(
         <div></div>
@@ -64,7 +69,7 @@ const NavDropdown = () => {
   }else{
     return (
     <Stack direction="row" spacing={2}>
-      <div>
+      <Box display="flex">
         <Button
           ref={anchorRef}
           id="composition-button"
@@ -72,9 +77,11 @@ const NavDropdown = () => {
           aria-expanded={open ? 'true' : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
+          sta
         >
           Dashboard
         </Button>
+        { isPicPresent ? <Avatar src={photoUrl}/> : (<Avatar>T</Avatar>)}
         <Popper
           open={open}
           anchorEl={anchorRef.current}
@@ -108,7 +115,7 @@ const NavDropdown = () => {
             </Grow>
           )}
         </Popper>
-      </div>
+      </Box>
     </Stack>
   );
 };
