@@ -93,7 +93,7 @@ const  Navbar = () => {
                         key={item.text}
                         onClick= {() => navigate(item.path)}
                         >
-                            {item.text}                           
+                        {item.text}                           
                         </NavButton>
                     ))}
                 </NavButtonGroup>
