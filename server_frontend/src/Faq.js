@@ -1,12 +1,11 @@
 import BoxContainer from "./component/BoxContainer";
-import ImageUpload from "./util/ImageUpload";
 
 const Faq = () => {
+    document.title =  'CIT Faqs';
     return (
       <><BoxContainer>
         <h1 className="pageName">Faqs</h1>
       </BoxContainer>
-      <ImageUpload/>
       </>
       );
 }
