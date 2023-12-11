@@ -7,6 +7,7 @@ import PhotoDisplayer from "./component/PhotosDisplayer";
 
 
 const Home = () => {
+    document.title =  'Extracuricular Explorer';
     const url ="127.0.0.1:8080/image/fileSystem/IMG_20170302_170443.jpg"
 
     const itemData = [
