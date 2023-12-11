@@ -273,7 +273,7 @@ const Login = () => {
                     Forgot Password?
                 </Typography>
                 <Typography 
-                    onClick={()=>(navigate("/Signup"))}
+                    onClick={()=>(navigate("/signup"))}
                     sx={{
                         right:"10%",
                         paddingLeft:"35%"
