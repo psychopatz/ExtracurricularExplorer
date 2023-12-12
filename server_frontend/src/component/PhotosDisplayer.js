@@ -1,17 +1,19 @@
-// PhotoDisplayer.js
-
-import React from 'react';
+// Import necessary modules
+import React, { useState } from 'react';
+import Modal from 'react-modal';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/system';
-import imagePlaceholder from '../resources/img/imagePlaceholder.jpeg'
-import malePlaceholder from '../resources/img/malePlaceholder.png'
-import femalePlaceholder from '../resources/img/femalePlaceholder.png'
+import imagePlaceholder from '../resources/img/imagePlaceholder.jpeg';
+import malePlaceholder from '../resources/img/malePlaceholder.png';
+import femalePlaceholder from '../resources/img/femalePlaceholder.png';
 
+// Define styled components
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   textAlign: 'center',
   color: theme.palette.text.secondary,
+  cursor: 'pointer', // Add cursor pointer to indicate it's clickable
 }));
 
 const StyledImage = styled('img')({
@@ -19,46 +21,61 @@ const StyledImage = styled('img')({
   height: 'auto',
 });
 
-
-const PhotoDisplayer = ({ photos, type = "default", isCustom = false, size = { xs: 12, sm: 6, md: 4 } }) => {
-  
-  const calculateSize = (numPhotos) => {
-  if(isCustom){
-    return size;
-  } else if (numPhotos === 1) {
-    return { xs: 12, sm: 12, md: 12 };
-  } else if (numPhotos <= 2) {
-    return { xs: 12, sm: 6, md: 6 };
-  } else if (numPhotos <= 4) {
-    return { xs: 12, sm: 6, md: 4 };
-  } else {
-    return { xs: 12, sm: 6, md: 3 };
-  }
-  
+const FullScreenImageModal = ({ isOpen, onRequestClose, imageUrl }) => {
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onRequestClose}
+      contentLabel="Full Screen Image Modal"
+    >
+      <div>
+        <StyledImage src={imageUrl} alt="Full Screen Image" />
+      </div>
+    </Modal>
+  );
 };
 
-  const sizeProps = calculateSize(Array.isArray(photos) ? photos.length : 1);
-  let placeholderType = ""
+const PhotoDisplayer = ({ photos, placeholderType = "default", size = { xs: 12, sm: 6, md: 4 } }) => {
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [fullScreenImageUrl, setFullScreenImageUrl] = useState('');
 
+  const openFullScreen = (imageUrl) => {
+    setFullScreenImageUrl(imageUrl);
+    setIsFullScreen(true);
+  };
+
+  const closeFullScreen = () => {
+    setIsFullScreen(false);
+    setFullScreenImageUrl('');
+  };
   
-  
-  switch(type){
-    case "male":
+  switch(placeholderType){
+    case "Male":
         placeholderType = malePlaceholder;
         break;
-    case "female":
+    case "Female":
         placeholderType = femalePlaceholder;
         break;
     default:
         placeholderType = imagePlaceholder;
-  }
+    }
+
 
   return (
     <div>
+
+      <FullScreenImageModal
+        isOpen={isFullScreen}
+        onRequestClose={closeFullScreen}
+        imageUrl={fullScreenImageUrl}
+      />
+
+
       <Grid container spacing={2}>
         {(Array.isArray(photos) ? photos : [photos]).map((photo, index) => (
-          <Grid item {...sizeProps} key={index}>
-            <StyledPaper>
+          <Grid item {...size} key={index}>
+ 
+            <StyledPaper onClick={() => openFullScreen(photo.img || placeholderType)}>
               <StyledImage
                 src={photo.img || placeholderType}
                 alt={photo.title}
