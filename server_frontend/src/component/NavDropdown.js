@@ -11,6 +11,7 @@ import IsLoggedIn from '../util/IsLoggedIn';
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import { Box } from '@mui/system';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const NavDropdown = () => {
   const [open, setOpen] = useState(false);
@@ -48,6 +49,11 @@ const NavDropdown = () => {
     navigate("/account");
   }
 
+  const userSettings =(e)=>{
+    handleClose(e)
+    navigate("/account/settings");
+  }
+
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = useRef(open);
   useEffect(() => {
@@ -58,8 +64,16 @@ const NavDropdown = () => {
     prevOpen.current = open;
   }, [open]);
 
-  const isPicPresent = false;
-  const photoUrl = "http://127.0.0.1:8080/image/fileSystem/5b4b2fdd-24d7-4168-a4ff-5adb696a64eb.jpg"
+
+  // I check if ang photo ky valid
+    const [userData, , ] = useLocalStorage('userDetails', '');
+    const photoUrl = "http://127.0.0.1:8080/image/fileSystem/"+userData.profilePicture;
+    const [isValid, setIsValid] = useState(null);
+    useEffect(() => {
+    fetch(photoUrl).then(res => {
+      setIsValid(res.status === 200);
+    });
+  }, []);
 
   if(!IsLoggedIn()){
     return(
@@ -68,7 +82,7 @@ const NavDropdown = () => {
 
   }else{
     return (
-    <Stack direction="row" spacing={2}>
+    <Stack direction="row" spacing={20}>
       <Box display="flex">
         <Button
           ref={anchorRef}
@@ -77,11 +91,10 @@ const NavDropdown = () => {
           aria-expanded={open ? 'true' : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
-          sta
         >
           Dashboard
         </Button>
-        { isPicPresent ? <Avatar src={photoUrl}/> : (<Avatar>T</Avatar>)}
+        { isValid ? <Avatar src={photoUrl}/> : (<Avatar>{userData.firstName[0]}</Avatar>)}
         <Popper
           open={open}
           anchorEl={anchorRef.current}
@@ -106,8 +119,8 @@ const NavDropdown = () => {
                     aria-labelledby="composition-button"
                     onKeyDown={NavDropdown}
                   >
-                    <MenuItem>Welcome {window.localStorage.getItem("user")}</MenuItem>
                     <MenuItem onClick={userAccount}>Profile</MenuItem>
+                    <MenuItem onClick={userSettings}>Settings</MenuItem>
                     <MenuItem onClick={userLogOut}>Logout</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
