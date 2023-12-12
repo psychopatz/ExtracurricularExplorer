@@ -85,7 +85,7 @@ const  Navbar = () => {
                 
                 <NavButtonGroup>
                     {menuItems.map(item => (
-                        <NavButton kja
+                        <NavButton 
                         component={NavLink}
                         to={item.path}
                         variant="text"
