@@ -1,8 +1,12 @@
+// PhotoDisplayer.js
+
 import React from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import { styled } from '@mui/system';
+import imagePlaceholder from '../resources/img/imagePlaceholder.jpeg'
+import malePlaceholder from '../resources/img/malePlaceholder.png'
+import femalePlaceholder from '../resources/img/femalePlaceholder.png'
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -15,17 +19,53 @@ const StyledImage = styled('img')({
   height: 'auto',
 });
 
-const PhotoDisplayer = ({ photos, size = { xs: 12, sm: 6, md: 4 } }) => {
+
+const PhotoDisplayer = ({ photos, type = "default", isCustom = false, size = { xs: 12, sm: 6, md: 4 } }) => {
+  
+  const calculateSize = (numPhotos) => {
+  if(isCustom){
+    return size;
+  } else if (numPhotos === 1) {
+    return { xs: 12, sm: 12, md: 12 };
+  } else if (numPhotos <= 2) {
+    return { xs: 12, sm: 6, md: 6 };
+  } else if (numPhotos <= 4) {
+    return { xs: 12, sm: 6, md: 4 };
+  } else {
+    return { xs: 12, sm: 6, md: 3 };
+  }
+  
+};
+
+  const sizeProps = calculateSize(Array.isArray(photos) ? photos.length : 1);
+  let placeholderType = ""
+
+  
+  
+  switch(type){
+    case "male":
+        placeholderType = malePlaceholder;
+        break;
+    case "female":
+        placeholderType = femalePlaceholder;
+        break;
+    default:
+        placeholderType = imagePlaceholder;
+  }
+
   return (
     <div>
-      <Typography variant="h4" gutterBottom>
-        Photo Displayer
-      </Typography>
       <Grid container spacing={2}>
-        {photos.map((photo, index) => (
-          <Grid item xs={size.xs} sm={size.sm} md={size.md} key={index}>
+        {(Array.isArray(photos) ? photos : [photos]).map((photo, index) => (
+          <Grid item {...sizeProps} key={index}>
             <StyledPaper>
-              <StyledImage src={photo.img} alt={photo.title} />
+              <StyledImage
+                src={photo.img || placeholderType}
+                alt={photo.title}
+                onError={(e) => {
+                  e.target.src = placeholderType;
+                }}
+              />
             </StyledPaper>
           </Grid>
         ))}
