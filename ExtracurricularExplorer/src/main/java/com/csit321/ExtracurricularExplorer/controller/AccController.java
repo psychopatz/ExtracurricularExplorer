@@ -19,6 +19,7 @@ public class AccController {
 
     @PostMapping("/add")
     public String add(@RequestBody Moderator moderator){
+        System.out.println(moderator);
         moderatorService.save(moderator);
         return "New Account Successfully added";
     }

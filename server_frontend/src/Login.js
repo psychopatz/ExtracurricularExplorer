@@ -1,5 +1,4 @@
 import { Typography, Box,styled, Paper, Button, TextField} from "@mui/material";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BarComponent from "./component/BarComponent";
@@ -7,6 +6,8 @@ import IsLoggedIn from "./util/IsLoggedIn";
 import bgLogin from './resources/img/bgLogin.png';
 import logo from './resources/img/cit-logo.png';
 import schPlaceholder from './resources/img/loginCit.png';
+import callApi from "./hooks/callApi";
+import InputFieldComponent from "./component/InputFieldComponent";
 
 
 const LoginBg = styled(Box)(() =>({
@@ -25,7 +26,7 @@ const LoginBg = styled(Box)(() =>({
 const LoginPlaceholder = styled(Box)(() =>({
     position: "absolute",
     width: "auto%",
-    height: "15%",
+    height: "8%",
     zIndex: 10,
     
     
@@ -38,6 +39,17 @@ const Img = styled(Box)(() =>({
     height: "100%",
 }))
 
+const LoginTextField ={
+    
+    position:"relative",
+    variant : "filled",
+    paddingBottom: "4%",
+    input: {
+                background: "white"
+            }
+        
+}
+
 
 
 const Login = () => {
@@ -45,94 +57,77 @@ const Login = () => {
 
 //Variables
     const navigate = useNavigate();
-    const [err, setErr] = useState('');
-    const [trigger,setTrigger] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
+  
+    
     let [data, setData] = useState({
         email: "",
-        password: "",
+        password: ""
     })
 
     
-    const handle = (e)=>{
+    const handleInput = (e)=>{
         const newData = {...data};
-        newData[e.target.id] = e.target.value;
+        newData[e.target.name] = e.target.value;
         setData(newData);
 
     };
 
   const validateInputs = () => {
-    document.title =  'Login';
-    // use a regular expression to check if the email is a valid email address
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    //Only accepts CIT edu accounts and < 8 passwords
+    const emailRegex = /^[a-zA-Z0-9._-]+@cit\.edu$/;
     const emailValid = emailRegex.test(data.email);
     const passwordValid = data.password.length >= 8;
-    return emailValid && passwordValid;
-  };
-
-    
-    useEffect(() => {
-    if (IsLoggedIn()) {
-      navigate("/")
-    }
-    }, [trigger]);
-
-    useEffect(() => {
-        fetchData();
-        setTrigger(false)
-    }, [trigger]);
-
-    const fetchData = async () => {
-    const options = {
-      method: 'POST',
-      url: 'http://127.0.0.1:8080/login/verify',
-      data: { email: data.email, password: data.password},
+    if(!emailValid){
+        console.log(emailValid)
+        setErrorMsg("Invalid Email: Must be a CIT edu account.")}
+    else if (!passwordValid){
+        console.log(passwordValid)
+        setErrorMsg("Invalid Password: Must no less than 8 characters")}
+    return emailValid && passwordValid;   
     };
 
-    try {
-      const { data } = await axios.request(options);
-      console.log("data:"+data);
-      if(data>0){
-            window.localStorage.setItem("loginSession", JSON.stringify(data));
-            
-      }else if (data === -1 && trigger){
-        setErr("User Not Found")
-      }else if (data === -2){
-        setErr("Invalid Password")
-      }
-      
-    } catch (error) {
-      console.error("error:"+error);
+    
+    
+    if (IsLoggedIn()) { 
+      navigate("/")
     }
-  };
 
-  
-  
 
-  const handleSubmit = (event) => {
+   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErr("");
-    
-    const valid = validateInputs();
-   
-    if (valid) {
-        setTrigger(true);
-    }
-    else{
-        setData({
-        email: "",
-        password: "",
+    setErrorMsg('');
 
-    })
-    
+    const valid = validateInputs();
+    let isDone = false;
+    console.log('isValid: ' + valid);
+
+    if (valid) {
+      try {
+        const apiResponse = await callApi('/login/verify', 'POST', data);
+        console.log('API ResponseEz:', apiResponse);
+
+        // Handle the API response as needed
+        if (apiResponse && apiResponse.data.id >= 1) {
+          localStorage.setItem('loginSession', JSON.stringify(apiResponse.data));
+          isDone = true
+        } else if (apiResponse && apiResponse.id === -1) {
+          setErrorMsg('Invalid Password');
+        } else if (apiResponse && apiResponse.id === -2) {
+          setErrorMsg('Moderator Email not found');
+        }
+        // Handle other conditions if needed
+      } catch (error) {
+        setErrorMsg('Fatal Error: ' + error.message);
+      }
+    }
+    if(isDone){
+        navigate('/');
     }
   };
 
-
-    
- 
-
-    return ( 
-        <>
+return ( 
+    <>
         <BarComponent />
         <Box sx={{
             marginBottom: "47%",
@@ -147,6 +142,7 @@ const Login = () => {
             alt="CIT Logo"
             src={logo}
             />
+
         <Box sx={{
                 border: 6,
                 borderColor: 'secondary.main',
@@ -190,7 +186,7 @@ const Login = () => {
 
 
                 }}>
-                    Login
+                   Moderator Login
                 </Typography>
                 <form sx={{
                     padding:"40%",
@@ -201,12 +197,12 @@ const Login = () => {
                     <Typography sx={{
                     paddingTop: "4%",
                     textAlign: "center",
-                    fontSize: 30,
+                    fontSize: 20,
                     color: 'red'
 
 
                 }}>
-                    {err}
+                    {errorMsg}
                 </Typography>
                 <form
                     sx={{
@@ -216,39 +212,25 @@ const Login = () => {
                         gap: "160px",
                 }}></form>
                 {/* Create the input box for the login */}
-                <TextField
-                    id="email"
-                    name="email"
-                    type="email"
-                    label="Email:"
-                    variant="filled"
-                    onChange={(e) => handle(e)}
-                    sx={{
-                        width: "80%",
-                        padding: "10%",
-                        input: {
-                                    background: "white"
-                            }
-                        
-                    }}
-                />
+                <Box sx={{
+                    padding:"14%",
+                    
+                    }}>
+                    <InputFieldComponent 
+                        name="email"
+                        type="text"
+                        label="Email: "
+                        sx ={LoginTextField} 
+                        onChange={handleInput}
+                        />
                 {/* Create the input box for the password */}
-                <TextField
-                    id="password"
-                    name="password"
-                    type="password"
-                    label="Password:"
-                    variant="filled"
-                    onChange={(e) => handle(e)}
-                    sx={{
-                        width: "80%",
-                        padding: "10%",
-                        input: {
-                                    background: "white"
-                            }
-                        
-                    }}
-                />
+                <InputFieldComponent 
+                        name="password"
+                        type="password"
+                        label="Password: "
+                        sx ={LoginTextField} 
+                        onChange={handleInput}
+                        />
                 {/* Create the submit button for the login form */}
                 <Button
                     type="submit"
@@ -264,6 +246,7 @@ const Login = () => {
                 >
                     Login
                 </Button>
+                </Box>
                 </form>
                 <Typography sx={{
                         paddingTop:"10%",
@@ -290,8 +273,11 @@ const Login = () => {
         <BarComponent />
         
         </>
+        
 
      );
+
+    
 }
  
 export default Login;

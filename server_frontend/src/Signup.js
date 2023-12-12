@@ -2,15 +2,18 @@ import { Typography, Box,styled, Paper, Button, TextField} from "@mui/material";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns"
 import BarComponent from "./component/BarComponent";
 import IsLoggedIn from "./util/IsLoggedIn";
 import SetOption from "./util/SetOption";
 import bgLogin from './resources/img/bgLogin.png';
 import logo from './resources/img/cit-logo.png';
+import InputFieldComponent from "./component/InputFieldComponent";
+import RadioComponent from "./component/RadioComponent";
 
 
 
-const LoginBg = styled(Box)(() =>({
+const SignupBg = styled(Box)(() =>({
     position: "absolute",
     width: "100%",
     height: "100%",
@@ -23,7 +26,7 @@ const LoginBg = styled(Box)(() =>({
     
         
 }))
-const LoginPlaceholder = styled(Box)(() =>({
+const SignupPlaceholder = styled(Box)(() =>({
     position: "absolute",
     width: "auto%",
     height: "12%",
@@ -35,6 +38,30 @@ const LoginPlaceholder = styled(Box)(() =>({
 }))
 
 
+const SignupTextField ={
+    
+    position:"relative",
+    variant : "filled",
+    paddingBottom: "2%",
+    input: {
+                background: "white"
+            }
+        
+}
+
+
+const SignupButton = styled(Button)(() =>({
+    left:"38%",
+    paddingLeft:"10%",
+    paddingRight:"10%",
+    fontWeight:800,
+    position:"absolute",
+    top: "88%"
+    
+    
+        
+}))
+
 
 
 
@@ -42,18 +69,24 @@ const Signup = () => {
 
 //Variables
     const navigate = useNavigate();
-    const [err, setErr] = useState('');
+    let today = new Date();
+    const [errorMsg, setErrorMsg] = useState('');
     const [data, setData] = useState({
-        fName: "",
-        lName: "",
+        firstName: "",
+        lastName: "",
         email: "",
         password: "",
         rePassword: "",
+        gender: "",
+        schoolId: "",
+        department: ""
+
     })
 
-    const handle = (e)=>{
+    const handleInput = (e)=>{
+        console.log("HandleInput: "+ e)
         const newData = {...data};
-        newData[e.target.id] = e.target.value;
+        newData[e.target.name] = e.target.value;
         setData(newData);
         console.log(data)
         console.log(newData)
@@ -64,13 +97,17 @@ const Signup = () => {
 
     
   const validateInputs = () => {
-    // use a regular expression to check if the email is a valid email address
-    if(data.password !== data.rePassword){
-        return false;
-    }
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    //Only accepts CIT edu accounts and < 8 passwords
+    const emailRegex = /^[a-zA-Z0-9._-]+@cit\.edu$/;
     const emailValid = emailRegex.test(data.email);
-    const passwordValid = data.password.length >= 8;
+    const passwordValid = data.password.length >= 8 && data.password === data.rePassword;
+    if(!emailValid){
+        console.log(emailValid)
+        setErrorMsg("Invalid Email: Must be a CIT edu account.")
+    }else if (!passwordValid){
+        console.log(passwordValid)
+        setErrorMsg("Invalid Password: Must be same and no less than 8 characters")
+    }
     return emailValid && passwordValid;
   };
 
@@ -84,20 +121,23 @@ const Signup = () => {
         let endpoint = SetOption("url")+"/account/add";
         let userData = 
         {
-            "firstName" : data.fName,
-            "lastName" : data.lName,
+            "firstName" : data.firstName,
+            "lastName" : data.lastName,
             "email" : data.email,
-            "password" : data.password
+            "password" : data.password,
+            "gender": data.gender,
+            "schoolId": data.schoolId,
+            "department": data.department,
+            "dateJoined": format(today, "yyyy-MM-dd")
         }
         await axios.post(endpoint,userData)
         .then(res => {
-            console.log(res.data)
+            console.log("Data: "+res.data)
+            localStorage.setItem('loginSession', JSON.stringify(res.data));
         })
-        console.log(userData)
+        console.log("UserData: "+userData)
         navigate('/');
-    } else {
-        setErr("Invalid Password Detected");
-    }
+    } 
   };
 
     if(IsLoggedIn()){
@@ -113,11 +153,11 @@ const Signup = () => {
             paddingTop: ".1%",
             paddingBottom: ".1%"
         }}>
-        <LoginBg >
+        <SignupBg >
                 
 
-        </LoginBg>
-        <LoginPlaceholder component="img"
+        </SignupBg>
+        <SignupPlaceholder component="img"
             alt="CIT Logo"
             src={logo}
             />
@@ -155,10 +195,10 @@ const Signup = () => {
                     <Typography sx={{ //Error
                     paddingTop: "4%",
                     textAlign: "center",
-                    fontSize: 30,
+                    fontSize: "100%",
                     color: 'red'
                 }}>
-                    {err}
+                    {errorMsg}
                 </Typography>
 
 
@@ -167,146 +207,78 @@ const Signup = () => {
                     display: "flex",
                     flexDirection: "column",
                     gap: "160px",
-                }}></form>
-                <TextField
-                    id="fName"
-                    name="firstName"
-                    type="text"
-                    label="FirstName"
-                    variant="filled"
-                    onChange={(e) => handle(e)}
-                    sx={{
-                       width: "80%",
-                        paddingLeft: "8%",paddingRight: "8%",
-                        position:"relative",
-                        input: {
-                                    background: "white"
-                            }
+                }}>
+
+                </form>
+                <Box sx= {{padding: "10%",backgroundColor: "transparent"}}>
+                    
+                        <InputFieldComponent 
+                        name="firstName"
+                        type="text"
+                        label="FirstName:"
+                        sx ={SignupTextField} 
+                        onChange={handleInput}
+                        />
+                        <InputFieldComponent 
+                        name="lastName"
+                        type="text"
+                        label="LastName:"
+                        sx ={SignupTextField} 
+                        onChange={handleInput}
+                        />
+                        <RadioComponent
+                            name = "gender"
+                            value = {data.gender}
+                            options={[
+                                {value: "Male",label: "Male"},
+                                {value: "Female", label: "Female"}]                            }
+                            onChange={handleInput}
                         
-                    }}
-                />
-                <TextField
-                    id="lName"
-                    name="lastName"
-                    type="text"
-                    label="LastName"
-                    variant="filled"
-                    onChange={(e) => handle(e)}
-                    sx={{
-                        width: "80%",
-                        paddingLeft: "8%",paddingRight: "8%",
-                        position:"relative",
-                        input: {
-                                    background: "white"
-                            }
+                        />
+                        <InputFieldComponent 
+                        name="email"
+                        type="text"
+                        label="CIT Email:"
+                        sx ={SignupTextField} 
+                        onChange={handleInput}
+                        />
+                        <InputFieldComponent 
+                        name="schoolId"
+                        type="text"
+                        label="School ID:"
+                        sx ={SignupTextField} 
+                        onChange={handleInput}
+                        />
+                        <InputFieldComponent 
+                        name="department"
+                        type="text"
+                        label="Department:"
+                        sx ={SignupTextField} 
+                        onChange={handleInput}
+                        />
+                        <InputFieldComponent 
+                        name="password"
+                        type="password"
+                        label="Password:"
+                        sx ={SignupTextField} 
+                        onChange={handleInput}
+                        />
+                        <InputFieldComponent 
+                        name="rePassword"
+                        type="password"
+                        label="Retype Password:"
+                        sx ={SignupTextField} 
+                        onChange={handleInput}
+                        />
                         
-                    }}
-                />
-                <TextField
-                    id="idNum"
-                    name="idNumber"
-                    type="number"
-                    label="ID Number"
-                    variant="filled"
-                    onChange={(e) => handle(e)}
-                    sx={{
-                        width: "80%",
-                        paddingLeft: "8%",paddingRight: "8%",
-                        position:"relative",
-                        input: {
-                                    background: "white"
-                            }
-                        
-                    }}
-                />
-                
-                
-                <TextField
-                    id="email"
-                    name="email"
-                    type="email"
-                    label="Email"
-                    variant="filled"
-                    onChange={(e) => handle(e)}
-                    sx={{
-                        width: "80%",
-                        paddingLeft: "8%",paddingRight: "8%",
-                        position:"relative",
-                        input: {
-                                    background: "white"
-                            }
-                        
-                    }}
-                />
-                <TextField
-                    id="deptCourse"
-                    name="DeptCourse"
-                    type="text"
-                    label="Department/Course"
-                    variant="filled"
-                    onChange={(e) => handle(e)}
-                    sx={{
-                       width: "80%",
-                        paddingLeft: "8%",paddingRight: "8%",
-                        position:"relative",
-                        input: {
-                                    background: "white"
-                            }
-                        
-                    }}
-                />
-                <TextField
-                    id="password"
-                    name="password"
-                    type="password"
-                    label="Password"
-                    autoComplete="off"
-                    variant="filled"
-                    onChange={(e) => handle(e)}
-                    sx={{
-                        width: "80%",
-                        paddingLeft: "8%",paddingRight: "8%",
-                        position:"relative",
-                        input: {
-                                    background: "white"
-                            }
-                        
-                    }}
-                />
-                <TextField
-                    id="rePassword"
-                    name="password"
-                    type="password"
-                    label="Retype Password"
-                    autoComplete="off"
-                    variant="filled"
-                    onChange={(e) => handle(e)}
-                    sx={{
-                        width: "80%",
-                        paddingLeft: "8%",paddingRight: "8%",
-                        position:"relative",
-                        input: {
-                                    background: "white"
-                            }
-                        
-                    }}
-                />
-                {/* Create the submit button for the login form */}
-                <Button
+                <SignupButton
                     type="submit"
                     variant="contained"
                     color="primary"
-                    sx={{
-                        left:"38%",
-                        paddingLeft:"10%",
-                        paddingRight:"10%",
-                        fontWeight:800,
-                        position:"absolute",
-                        top: "88%"
-                    }}
                 >
                     Submit
-                </Button>
+                </SignupButton>
+                </Box>
                 </form>
             </Paper>
   

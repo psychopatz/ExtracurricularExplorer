@@ -77,6 +77,7 @@ const  Navbar = () => {
                 <Toolbar color="primary">
                     <NavBox     
                     component="img"
+                    onClick={()=>{ navigate("/login")}}
                     alt="CIT Logo"
                     src={logo}
                     

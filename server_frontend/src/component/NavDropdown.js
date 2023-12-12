@@ -11,7 +11,6 @@ import IsLoggedIn from '../util/IsLoggedIn';
 import { useNavigate } from 'react-router-dom';
 import { Avatar } from '@mui/material';
 import { Box } from '@mui/system';
-import useLocalStorage from '../hooks/useLocalStorage';
 
 const NavDropdown = () => {
   const [open, setOpen] = useState(false);
@@ -66,13 +65,31 @@ const NavDropdown = () => {
 
 
   // I check if ang photo ky valid
-    const [userData, , ] = useLocalStorage('userDetails', '');
+    let userData = window.JSON.parse(localStorage.getItem('loginSession'))
+    if(!userData){
+      userData = {
+          "id": -2,
+          "firstName": "Regular",
+          "lastName": "User",
+          "email": "",
+          "password": "",
+          "gender": "",
+          "schoolId": "",
+          "department": "",
+          "dateJoined": ""
+        }
+
+    }else{
+
+    }
     const photoUrl = "http://127.0.0.1:8080/image/fileSystem/"+userData.profilePicture;
     const [isValid, setIsValid] = useState(null);
+
     useEffect(() => {
     fetch(photoUrl).then(res => {
       setIsValid(res.status === 200);
     });
+
   }, []);
 
   if(!IsLoggedIn()){

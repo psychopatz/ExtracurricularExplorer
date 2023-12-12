@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
+import java.time.LocalDate;
+
 @Setter
 @Getter
 @Entity
@@ -20,11 +22,16 @@ public class Moderator {
     private String email;
     @Column(name="password",length = 30, nullable = false)
     private String password;
-    @Getter
+    private String gender;
+    private String schoolId;
+    private String department;
+    private LocalDate dateJoined;
     private String profilePicture;
+
 
     public Moderator(){
 
     }
+
 
 }

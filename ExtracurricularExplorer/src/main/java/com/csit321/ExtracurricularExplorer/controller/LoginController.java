@@ -13,8 +13,9 @@ public class LoginController {
     private ModeratorService moderatorService;
 
     @PostMapping(path = "/verify")
-    String moderatorId (@RequestBody Moderator moderator) {
-        int moderatorCurrentId = -1; // Not Found
+    Moderator moderatorId(@RequestBody Moderator moderator) {
+        Moderator moderatorCurrentId = new Moderator();
+        moderatorCurrentId.setId(-2);// Not Found
         Moderator data = moderatorService.findByEmail(moderator.getEmail());
 
         if(data!= null){
@@ -22,16 +23,16 @@ public class LoginController {
             System.out.println(moderator.getEmail());
             System.out.println(data.getPassword());
             System.out.println(data.getId());
-            moderatorCurrentId = -2; //Invalid Password
+            moderatorCurrentId.setId(-1); //Invalid Password
             System.out.println(moderator.getPassword().equals(data.getPassword()));
             if(moderator.getPassword().equals(data.getPassword())){
-                moderatorCurrentId = data.getId();
+                moderatorCurrentId = data;
 
             }
 
         }
         System.out.println("output = "+moderatorCurrentId);
-        return String.valueOf(moderatorCurrentId);
+        return moderatorCurrentId;
     }
 
 

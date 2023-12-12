@@ -1,31 +1,12 @@
 import BoxContainer from "./component/BoxContainer";
-import { useEffect } from "react";
 import PhotoDisplayer from "./component/PhotosDisplayer";
-import useLocalStorage from "./hooks/useLocalStorage";
-import useApiFetch from "./hooks/useApiFetch";
 
 
 
 const Home = () => {
     document.title =  'Extracuricular Explorer';
-    const [storedUserId, , ] = useLocalStorage('loginSession', '');
-    const [storedUserDetails,setUserDetails , ] = useLocalStorage('userDetails', '');
-    const { data, loading, error, fetchData } = useApiFetch();
-
-    useEffect(() => {
-        if(storedUserId && !storedUserDetails ){
-            
-            fetchData("/account/user/"+storedUserId);
-            setUserDetails(data)
-            console.log(data)
-            console.log(loading)
-            console.log(error)
-    }
-        
-    }, []);
     
     
-
     const url ="127.0.0.1:8080/image/fileSystem/IMG_20170302_170443.jpg"
 
     const itemData = [

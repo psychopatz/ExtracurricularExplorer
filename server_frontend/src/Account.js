@@ -2,22 +2,15 @@ import React, { useEffect, useState } from 'react';
 import useLocalStorage from "./hooks/useLocalStorage";
 import { Box, Typography } from "@mui/material";
 import PhotoDisplayer from './component/PhotosDisplayer';
-import useApiFetch from './hooks/useApiFetch';
+import BarComponent from './component/BarComponent';
 
 
 const Account = () => {
-    const [storedValue, setStoredValue, clearStoredValue] = useLocalStorage('loginSession', '-2');
-    //User Data
-    const { data, loading, error, fetchData } = useApiFetch();
-    useEffect(() => {
-        fetchData("/account/user/"+storedValue);
-        
-        console.log(data)
-        console.log(loading)
-        console.log(error)
-    }, []);
+    const userData = window.JSON.parse(localStorage.getItem('loginSession'))
+//User Data
 
-    //Upload Photo
+
+//Upload Photo
 
 //Object { id: 50, 
 //firstName: "Charles", 
@@ -29,21 +22,34 @@ const Account = () => {
         <>
           
           <Box>
-                {data && (
+            <BarComponent/>
+                {userData && (
                 <>
                 <PhotoDisplayer photos={
                   {
-                      img: 'http://127.0.0.1:8080/image/fileSystem/' + data.profilePicture,
-                      title: data.firstName+" Profile"
-                  }} />
-                <Typography>Moderator Name: {data.firstName} {data.lastName}</Typography>
-                <Typography>Email: {data.email}</Typography>
+                      img: 'http://127.0.0.1:8080/image/fileSystem/' + userData.profilePicture,
+                      title: userData.firstName+" Profile"
+                  }}
+                  type= {userData.gender}
+                  isCustom = {true}
+                  size={{ xs: 12, sm: 6, md: 3 }}
+                  
+                  />
+                <Typography>Moderator Name: {userData.firstName} {userData.lastName}</Typography>
+                <Typography>Gender: {userData.gender}</Typography>
+                <Typography>Email: {userData.email}</Typography>
+                <Typography>School ID: {userData.schoolId}</Typography>
+                <Typography>Department: {userData.department}</Typography>
+                <Typography>Date Joined: {userData.dateJoined}</Typography>
+                
+                
                 
                 </>)
                   
                 }
           
           </Box>
+          <BarComponent/>
           
 
         
