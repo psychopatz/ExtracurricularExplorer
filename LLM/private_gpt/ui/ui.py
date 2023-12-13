@@ -20,13 +20,14 @@ from private_gpt.server.ingest.ingest_service import IngestService
 from private_gpt.settings.settings import settings
 from private_gpt.ui.images import logo_svg
 
+
 logger = logging.getLogger(__name__)
 
 THIS_DIRECTORY_RELATIVE = Path(__file__).parent.relative_to(PROJECT_ROOT_PATH)
 # Should be "private_gpt/ui/avatar-bot.ico"
 AVATAR_BOT = THIS_DIRECTORY_RELATIVE / "avatar-bot.ico"
 
-UI_TAB_TITLE = "My Private GPT"
+UI_TAB_TITLE = "William AI"
 
 SOURCES_SEPARATOR = "\n\n Sources: \n"
 
@@ -213,13 +214,13 @@ class PrivateGptUi:
             css=".logo { "
             "display:flex;"
             "background-color: #C7BAFF;"
-            "height: 80px;"
+            "height: 180px;"
             "border-radius: 8px;"
             "align-content: center;"
             "justify-content: center;"
             "align-items: center;"
             "}"
-            ".logo img { height: 25% }",
+            ".logo img { height: 55% }",
         ) as blocks:
             with gr.Row():
                 gr.HTML(f"<div class='logo'/><img src={logo_svg} alt=PrivateGPT></div")

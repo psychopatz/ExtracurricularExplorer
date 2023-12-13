@@ -79,7 +79,7 @@ navigation:
     layout:
       - section: Overview
         contents:
-          - page: API Reference overview
+          - page : API Reference overview
             path: ./docs/pages/api-reference/api-reference.mdx
           - page: SDKs
             path: ./docs/pages/api-reference/sdks.mdx
