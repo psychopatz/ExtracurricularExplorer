@@ -48,18 +48,17 @@ const PhotoDisplayer = ({ photos, placeholderType = "default", size = { xs: 12, 
     setIsFullScreen(false);
     setFullScreenImageUrl('');
   };
-  
-  switch(placeholderType){
-    case "Male":
-        placeholderType = malePlaceholder;
-        break;
-    case "Female":
-        placeholderType = femalePlaceholder;
-        break;
-    default:
-        placeholderType = imagePlaceholder;
-    }
+  let placeholder = placeholderType.toLowerCase;
+  console.log(placeholderType)
+  if(placeholder == "male"){
+      placeholder = malePlaceholder;}
+  else if(placeholder === "female"){
+    placeholder = femalePlaceholder;
+  }else{
+    placeholder = imagePlaceholder;
+  }
 
+    console.log(placeholder)
 
   return (
     <div>
@@ -75,12 +74,12 @@ const PhotoDisplayer = ({ photos, placeholderType = "default", size = { xs: 12, 
         {(Array.isArray(photos) ? photos : [photos]).map((photo, index) => (
           <Grid item {...size} key={index}>
  
-            <StyledPaper onClick={() => openFullScreen(photo.img || placeholderType)}>
+            <StyledPaper onClick={() => openFullScreen(photo.img || placeholder)}>
               <StyledImage
-                src={photo.img || placeholderType}
+                src={photo.img || placeholder}
                 alt={photo.title}
                 onError={(e) => {
-                  e.target.src = placeholderType;
+                  e.target.src = placeholder;
                 }}
               />
             </StyledPaper>

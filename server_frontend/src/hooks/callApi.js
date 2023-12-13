@@ -11,7 +11,17 @@ const callApi = async (endpoint, method = 'GET', body = null) => {
         response = await axios.get(url);
         break;
       case 'POST':
-        response = await axios.post(url, body);
+        if (body instanceof FormData) {
+          // If the body is a FormData object, it's a file upload
+          response = await axios.post(url, body, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+        } else {
+          // Otherwise, it's a regular POST request
+          response = await axios.post(url, body);
+        }
         break;
       case 'PUT':
         response = await axios.put(url, body);

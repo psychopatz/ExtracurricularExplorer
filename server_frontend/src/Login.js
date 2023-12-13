@@ -94,7 +94,7 @@ const Login = () => {
     }
 
 
-   const handleSubmit = async (event) => {
+    const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMsg('');
 

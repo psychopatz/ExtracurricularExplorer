@@ -111,7 +111,7 @@ const NavDropdown = () => {
         >
           Dashboard
         </Button>
-        { isValid ? <Avatar src={photoUrl}/> : (<Avatar>{userData.firstName[0]}</Avatar>)}
+        { isValid ? <Avatar src={photoUrl}/> : (<Avatar>{userData.firstName[0]}{userData.lastName[0]}</Avatar>)}
         <Popper
           open={open}
           anchorEl={anchorRef.current}

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import useLocalStorage from "./hooks/useLocalStorage";
 import { Box, Typography } from "@mui/material";
 import PhotoDisplayer from './component/PhotosDisplayer';
 import BarComponent from './component/BarComponent';
+import UploadImageButton from './component/uploadImageButton';
+import callApi from './hooks/callApi';
 
 
 const Account = () => {
@@ -11,6 +12,30 @@ const Account = () => {
 
 
 //Upload Photo
+const [selectedFile, setSelectedFile] = useState(null);
+  const handleFileChange = (event) => {
+  setSelectedFile(event);
+  console.log("Content: ",selectedFile)
+};
+const handleUpload = async () => {
+    if (!selectedFile) {
+      console.error('No file selected');
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+
+      const response = await callApi('/image/fileSystem', 'POST', formData);
+      console.log('File uploaded successfully:', response.data);
+
+     
+    } catch (error) {
+      // Handle error
+      console.error('Error uploading file:', error);
+    }
+  };
 
 //Object { id: 50, 
 //firstName: "Charles", 
@@ -30,8 +55,7 @@ const Account = () => {
                       img: 'http://127.0.0.1:8080/image/fileSystem/' + userData.profilePicture,
                       title: userData.firstName+" Profile"
                   }}
-                  type= {userData.gender}
-                  isCustom = {true}
+                  placeholderType= {userData.gender}
                   size={{ xs: 12, sm: 6, md: 3 }}
                   
                   />
@@ -41,6 +65,8 @@ const Account = () => {
                 <Typography>School ID: {userData.schoolId}</Typography>
                 <Typography>Department: {userData.department}</Typography>
                 <Typography>Date Joined: {userData.dateJoined}</Typography>
+                <UploadImageButton onHandleFile={handleFileChange}/>
+                
                 
                 
                 
