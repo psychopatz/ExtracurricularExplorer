@@ -210,11 +210,11 @@ class PrivateGptUi:
         logger.debug("Creating the UI blocks")
         with gr.Blocks(
             title=UI_TAB_TITLE,
-            theme=gr.themes.Soft(primary_hue=slate),
+            theme=gr.themes.Base(primary_hue=slate),
             css=".logo { "
             "display:flex;"
             "background-color: #C7BAFF;"
-            "height: 180px;"
+            "height: 170px;"
             "border-radius: 8px;"
             "align-content: center;"
             "justify-content: center;"
