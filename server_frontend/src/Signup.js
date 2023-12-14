@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns"
 import BarComponent from "./component/BarComponent";
 import IsLoggedIn from "./util/IsLoggedIn";
-import SetOption from "./util/SetOption";
 import bgLogin from './resources/img/bgLogin.png';
 import logo from './resources/img/cit-logo.png';
 import InputFieldComponent from "./component/InputFieldComponent";
@@ -118,7 +117,7 @@ const Signup = () => {
     event.preventDefault();
     const valid = validateInputs();
     if (valid) { 
-        let endpoint = SetOption("url")+"/account/add";
+        let endpoint = process.env.REACT_APP_HOST+"/account/add";
         let userData = 
         {
             "firstName" : data.firstName,

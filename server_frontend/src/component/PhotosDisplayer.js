@@ -48,13 +48,13 @@ const PhotoDisplayer = ({ photos, placeholderType = "default", size = { xs: 12, 
     setIsFullScreen(false);
     setFullScreenImageUrl('');
   };
-  let placeholder = placeholderType.toLowerCase;
+  let placeholder = placeholderType;
   console.log(placeholderType)
-  if(placeholder == "male"){
+  if(placeholder == "Male"){
       placeholder = malePlaceholder;}
-  else if(placeholder === "female"){
+  else if(placeholder == "Female"){
     placeholder = femalePlaceholder;
-  }else{
+  }else {
     placeholder = imagePlaceholder;
   }
 

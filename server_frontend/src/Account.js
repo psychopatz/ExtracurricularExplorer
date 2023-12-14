@@ -7,6 +7,7 @@ import callApi from './hooks/callApi';
 
 
 const Account = () => {
+    const { REACT_APP_APP_URL,REACT_APP_BACKEND_URL,REACT_APP_LLM_URL } = process.env;
     const userData = window.JSON.parse(localStorage.getItem('loginSession'))
 //User Data
 
@@ -52,7 +53,7 @@ const handleUpload = async () => {
                 <>
                 <PhotoDisplayer photos={
                   {
-                      img: 'http://127.0.0.1:8080/image/fileSystem/' + userData.profilePicture,
+                      img: REACT_APP_BACKEND_URL+'/image/fileSystem/' + userData.profilePicture,
                       title: userData.firstName+" Profile"
                   }}
                   placeholderType= {userData.gender}

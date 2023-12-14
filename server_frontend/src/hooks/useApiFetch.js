@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import axios from 'axios';
-import SetOption from "../util/SetOption";
 
 const useApiFetch = () => {
   const [data, setData] = useState(null);
@@ -8,7 +7,7 @@ const useApiFetch = () => {
   const [error, setError] = useState(null);
 
   const fetchData = async (endpoint, method = 'GET', body = null) => {
-    let url = SetOption("url") + endpoint;
+    let url = process.env.REACT_APP_HOST + endpoint;
     setLoading(true);
 
     try {
