@@ -1,4 +1,3 @@
-"""This file should be imported only and only if you want to run the UI locally."""
 import itertools
 import logging
 from collections.abc import Iterable
@@ -89,14 +88,14 @@ class PrivateGptUi:
                     full_response += delta.delta or ""
                 yield full_response
 
-            if completion_gen.sources:
-                full_response += SOURCES_SEPARATOR
-                cur_sources = Source.curate_sources(completion_gen.sources)
-                sources_text = "\n\n\n".join(
-                    f"{index}. {source.file} (page {source.page})"
-                    for index, source in enumerate(cur_sources, start=1)
-                )
-                full_response += sources_text
+            # if completion_gen.sources:
+            #     full_response += SOURCES_SEPARATOR
+            #     cur_sources = Source.curate_sources(completion_gen.sources)
+            #     sources_text = "\n\n\n".join(
+            #         f"{index}. {source.file} (page {source.page})"
+            #         for index, source in enumerate(cur_sources, start=1)
+            #     )
+            #     full_response += sources_text
             yield full_response
 
         def build_history() -> list[ChatMessage]:
@@ -205,6 +204,7 @@ class PrivateGptUi:
         logger.debug("Loading count=%s files", len(files))
         paths = [Path(file) for file in files]
         self._ingest_service.bulk_ingest([(str(path.name), path) for path in paths])
+        
 
     def _build_ui_blocks(self) -> gr.Blocks:
         logger.debug("Creating the UI blocks")
@@ -213,7 +213,7 @@ class PrivateGptUi:
             theme=gr.themes.Base(primary_hue=slate),
             css=".logo { "
             "display:flex;"
-            "background-color: #C7BAFF;"
+            "background-color: #f5c73d;"
             "height: 170px;"
             "border-radius: 8px;"
             "align-content: center;"
@@ -223,8 +223,9 @@ class PrivateGptUi:
             ".logo img { height: 55% }",
         ) as blocks:
             with gr.Row():
-                gr.HTML(f"<div class='logo'/><img src={logo_svg} alt=PrivateGPT></div")
-
+                gr.HTML(f"<div class='logo'/><img src={logo_svg} alt=CIT Logo></div")
+            
+            #Radio Settings
             with gr.Row():
                 with gr.Column(scale=3, variant="compact"):
                     mode = gr.Radio(
@@ -276,7 +277,7 @@ class PrivateGptUi:
                     _ = gr.ChatInterface(
                         self._chat,
                         chatbot=gr.Chatbot(
-                            label=f"LLM: {settings().llm.mode}",
+                            label=f"😜 William AI",
                             show_copy_button=True,
                             render=False,
                             avatar_images=(
