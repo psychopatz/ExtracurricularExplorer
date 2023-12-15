@@ -13,6 +13,7 @@ import { Avatar } from '@mui/material';
 import { Box } from '@mui/system';
 
 const NavDropdown = () => {
+  const { REACT_APP_BACKEND_URL } = process.env;
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ const NavDropdown = () => {
     }else{
 
     }
-    const photoUrl = "http://127.0.0.1:8080/image/fileSystem/"+userData.profilePicture;
+    const photoUrl = REACT_APP_BACKEND_URL+"/image/fileSystem/"+userData.profilePicture;
     const [isValid, setIsValid] = useState(null);
 
     useEffect(() => {

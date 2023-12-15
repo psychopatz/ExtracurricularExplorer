@@ -22,7 +22,7 @@ public class EventController {
     @PostMapping("/add")
     public String add (@RequestBody Event event){
         eventService.save(event);
-        return "New event successfully added";
+        return "New event successfully added: " + event.getId();
     }
     @GetMapping("/getAll")
     public List<Event> getAllEvents(){

@@ -5,9 +5,12 @@ import PhotoDisplayer from "./component/PhotosDisplayer";
 
 const Home = () => {
     document.title =  'Extracuricular Explorer';
+    const { REACT_APP_APP_URL,REACT_APP_BACKEND_URL,REACT_APP_LLM_URL } = process.env;
+    console.log({ REACT_APP_APP_URL });
+    console.log({ REACT_APP_BACKEND_URL});
+    console.log({ REACT_APP_LLM_URL });
     
     
-    const url ="127.0.0.1:8080/image/fileSystem/IMG_20170302_170443.jpg"
 
     const itemData = [
   {

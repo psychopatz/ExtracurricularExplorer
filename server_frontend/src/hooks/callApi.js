@@ -1,8 +1,8 @@
 import axios from 'axios';
-import SetOption from '../util/SetOption';
 
 const callApi = async (endpoint, method = 'GET', body = null) => {
-  const url = SetOption('url') + endpoint;
+  const {REACT_APP_BACKEND_URL } = process.env;
+  const url = REACT_APP_BACKEND_URL + endpoint;
 
   try {
     let response;

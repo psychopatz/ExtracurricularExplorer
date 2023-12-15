@@ -12,6 +12,8 @@ import NavCheck from './component/NavCheck';
 import Logout from './util/Logout';
 import Signup from './Signup';
 import Account from './Account';
+import EventData from './EventData';
+import LLMChatButton from './component/LLMChatButton';
 
 function App() {
 
@@ -25,10 +27,10 @@ function App() {
       </NavCheck>
       <Routes>
         <Route exact path="/" element = {<Home/>}/>
-==
         <Route path="/about" element = {<About/>}/>
         <Route path="/account" element = {<Account/>}/>
         <Route path="/organization" element = {<Organization/>}/>
+        <Route path="/events/data" element = {<EventData/>}/>
         <Route path="/events" element = {<Event/>}/>
         <Route path="/faqs" element = {<Faq/>}/>
         <Route path="/login" element = {<Login/>}/>
@@ -36,6 +38,9 @@ function App() {
         <Route path="/signUp" element = {<Signup/>}/>
         <Route path="*" element={<Error/>}/>
       </Routes>
+      <NavCheck>
+        <LLMChatButton/>
+      </NavCheck>
       <Footer/>
     
     </Router>

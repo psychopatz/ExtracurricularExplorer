@@ -2,9 +2,11 @@ package com.csit321.ExtracurricularExplorer.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 
+@Setter
 @Getter
 @Entity
 public class WebData {
@@ -22,23 +24,4 @@ public class WebData {
     public WebData() {
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void setImg(Collection<String> img) {
-        this.img = img;
-    }
-
-    public void setImgDetails(String imgDetails) {
-        this.imgDetails = imgDetails;
-    }
 }
