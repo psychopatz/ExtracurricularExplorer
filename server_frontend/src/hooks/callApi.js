@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const callApi = async (endpoint, method = 'GET', body = null) => {
-  const { REACT_APP_APP_URL,REACT_APP_BACKEND_URL,REACT_APP_LLM_URL } = process.env;
+  const {REACT_APP_BACKEND_URL } = process.env;
   const url = REACT_APP_BACKEND_URL + endpoint;
 
   try {

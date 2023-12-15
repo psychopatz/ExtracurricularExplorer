@@ -3,8 +3,7 @@ const IsLoggedIn = () => {
     const localData = window.JSON.parse(localStorage.getItem('loginSession'));
     let isLoggedin = false;
     if(localData && localData.id>=1){
-      console.log("Current user : = ")
-      console.log(localData)
+      //console.log("Current user :",localData)
       isLoggedin = true
 
     }

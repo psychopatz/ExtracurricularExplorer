@@ -5,9 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Collection;
 
+@Setter
 @Getter
 @Entity
 public class Organization {
@@ -23,27 +25,4 @@ public class Organization {
     public Organization() {
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAcronym(String acronym) {
-        this.acronym = acronym;
-    }
-
-    public void setTags(Collection<String> tags) {
-        this.tags = tags;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
-    public void setOrgDataID(int orgDataID) {
-        this.orgDataID = orgDataID;
-    }
 }

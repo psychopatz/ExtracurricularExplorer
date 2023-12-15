@@ -9,6 +9,7 @@ import bgLogin from './resources/img/bgLogin.png';
 import logo from './resources/img/cit-logo.png';
 import InputFieldComponent from "./component/InputFieldComponent";
 import RadioComponent from "./component/RadioComponent";
+import callApi from "./hooks/callApi";
 
 
 
@@ -117,7 +118,8 @@ const Signup = () => {
     event.preventDefault();
     const valid = validateInputs();
     if (valid) { 
-        let endpoint = process.env.REACT_APP_HOST+"/account/add";
+        let endpoint = "/account/add";
+        const method="POST";
         let userData = 
         {
             "firstName" : data.firstName,
@@ -129,13 +131,25 @@ const Signup = () => {
             "department": data.department,
             "dateJoined": format(today, "yyyy-MM-dd")
         }
-        await axios.post(endpoint,userData)
-        .then(res => {
-            console.log("Data: "+res.data)
-            localStorage.setItem('loginSession', JSON.stringify(res.data));
-        })
-        console.log("UserData: "+userData)
-        navigate('/');
+        try {
+            const response = await callApi(endpoint, method, userData);
+
+            if (response.status === 200) {
+               console.log("Data: "+response.data)
+               localStorage.setItem('loginSession', JSON.stringify(response.data));
+               console.log("UserData: "+userData)
+               navigate('/');
+               
+
+            }else {
+              console.error('Failed to update user:', response.data);
+
+            }
+          } catch (error) {
+            console.error('Error updating user:', error.message);
+          }
+
+        
     } 
   };
 
