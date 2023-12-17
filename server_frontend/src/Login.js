@@ -55,7 +55,6 @@ const LoginTextField ={
 const Login = () => {
     document.title =  'Moderator Login ';
 
-//Variables
     const navigate = useNavigate();
     const [errorMsg, setErrorMsg] = useState('');
   
@@ -111,9 +110,9 @@ const Login = () => {
         if (apiResponse && apiResponse.data.id >= 1) {
           localStorage.setItem('loginSession', JSON.stringify(apiResponse.data));
           isDone = true
-        } else if (apiResponse && apiResponse.id === -1) {
+        } else if (apiResponse && apiResponse.data.id == -1) {
           setErrorMsg('Invalid Password');
-        } else if (apiResponse && apiResponse.id === -2) {
+        } else if (apiResponse && apiResponse.data.id == -2) {
           setErrorMsg('Moderator Email not found');
         }
         // Handle other conditions if needed
@@ -125,6 +124,7 @@ const Login = () => {
         navigate('/');
     }
   };
+  
 
 return ( 
     <>

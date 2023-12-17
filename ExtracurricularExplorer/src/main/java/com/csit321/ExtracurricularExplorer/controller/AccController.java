@@ -21,7 +21,7 @@ public class AccController {
     public String add(@RequestBody Moderator moderator){
         System.out.println(moderator);
         moderatorService.save(moderator);
-        return "New Account Successfully added";
+        return "New Account Successfully added: ";
     }
 
     @GetMapping("/user/{id}")

@@ -50,10 +50,10 @@ const  Navbar = () => {
         text: "Organizations",
         path: "/organization"
         },
-        {
-        text: "Events",
-        path: "/events"
-        },
+        // {
+        // text: "Events",  Kapoyg Implement, complicated af i abtraction ang data lalo na sa dynamic formatting sa mga contents makabweset
+        // path: "/events"
+        // },
         {
         text: "Faqs",
         path: "/faqs"
@@ -65,14 +65,17 @@ const  Navbar = () => {
     
 
     return ( 
-        <Box sx={{flexGrow:-1}}>
+        <Box sx={{
+            flexGrow:-1,
+            marginBottom: "4%"
+            }}>
             
-            <AppBar position="static" color="background" 
+            <AppBar position="fixed" color="background" 
             sx={{
                 borderTop: 6,
                 borderBottom: 6,
                 borderColor: 'primary.main',
-                scrollPaddingBottom: 0
+                scrollPaddingBottom: 0,
             }}>
                 <Toolbar color="primary">
                     <NavBox     

@@ -1,17 +1,19 @@
 import { Box,styled } from "@mui/material";
 
 
-const TitleBox = styled(Box)(({theme}) =>({
+
+
+const BoxContainer = ({children, size = {height: '130px',width: 'auto',}}) => {
+  const TitleBox = styled(Box)(({theme}) =>({
     borderTop: 60,
     borderBottom: 600,
     borderColor: theme.palette.primary.main,
-    height: '130px',
-    width: 'auto',
+    height: size.height,
+    width: size.width,
     backgroundColor: theme.palette.secondary.main,
+
     
 }))
-
-const BoxContainer = ({children}) => {
     
     return ( 
         <TitleBox  sx={{

@@ -1,0 +1,26 @@
+meta {
+  name: Change Account Details
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://127.0.0.1:8080/account/user/1
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": 1,
+    "firstName": "Patrick Oliver",
+    "lastName": "Bustamante",
+    "email": "Bpatrickoliverb@cit.edu",
+    "password": "patpat123",
+    "gender": "Male",
+    "schoolId": "20-4531-932",
+    "department": "IT",
+    "dateJoined": "2023-11-24",
+    "profilePicture": "dc0514e5-573e-4ece-a6fc-9b4c31ea3073.jpg"
+  }
+}

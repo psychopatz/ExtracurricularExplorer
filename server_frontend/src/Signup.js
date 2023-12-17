@@ -80,7 +80,6 @@ const Signup = () => {
         gender: "",
         schoolId: "",
         department: ""
-
     })
 
     const handleInput = (e)=>{
@@ -136,7 +135,9 @@ const Signup = () => {
 
             if (response.status === 200) {
                console.log("Data: "+response.data)
-               localStorage.setItem('loginSession', JSON.stringify(response.data));
+               const apiResponse = await callApi('/login/verify', 'POST', data);
+               console.log('API ResponseEz:', apiResponse);
+               localStorage.setItem('loginSession', JSON.stringify(apiResponse.data));
                console.log("UserData: "+userData)
                navigate('/');
                

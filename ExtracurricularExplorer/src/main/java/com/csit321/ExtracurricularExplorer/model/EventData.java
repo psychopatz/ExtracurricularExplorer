@@ -7,8 +7,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.Collection;
 
-@Setter
-@Getter
 @Entity
 public class EventData {
     @Id
@@ -27,4 +25,59 @@ public class EventData {
     public EventData() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(int eventID) {
+        this.eventID = eventID;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Collection<String> getImages() {
+        return images;
+    }
+
+    public void setImages(Collection<String> images) {
+        this.images = images;
+    }
+
+    public LocalDate getDateModified() {
+        return dateModified;
+    }
+
+    public void setDateModified(LocalDate dateModified) {
+        this.dateModified = dateModified;
+    }
+
+    public int getRecentAuthor() {
+        return recentAuthor;
+    }
+
+    public void setRecentAuthor(int recentAuthor) {
+        this.recentAuthor = recentAuthor;
+    }
+
+    public Collection<Integer> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Collection<Integer> authors) {
+        this.authors = authors;
+    }
 }

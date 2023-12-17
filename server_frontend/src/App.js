@@ -14,6 +14,9 @@ import Signup from './Signup';
 import Account from './Account';
 import EventData from './EventData';
 import LLMChatButton from './component/LLMChatButton';
+import Settings from './Settings';
+import OrgContentComponent from './component/OrgContentComponent';
+import OrganizationNew from './OrganizationNew';
 
 function App() {
 
@@ -23,14 +26,16 @@ function App() {
     <>
     <Router>
       <NavCheck>
-        <Navbar />
+          <Navbar />
       </NavCheck>
       <Routes>
         <Route exact path="/" element = {<Home/>}/>
         <Route path="/about" element = {<About/>}/>
+        <Route path="/account/settings" element = {<Settings/>}/>
         <Route path="/account" element = {<Account/>}/>
         <Route path="/organization" element = {<Organization/>}/>
-        <Route path="/events/data" element = {<EventData/>}/>
+        <Route path="/organization/add" element = {<OrganizationNew/>}/>
+        <Route path="/organization/data/:id" element = {<OrgContentComponent/>}/>
         <Route path="/events" element = {<Event/>}/>
         <Route path="/faqs" element = {<Faq/>}/>
         <Route path="/login" element = {<Login/>}/>
@@ -39,7 +44,7 @@ function App() {
         <Route path="*" element={<Error/>}/>
       </Routes>
       <NavCheck>
-        <LLMChatButton/>
+          <LLMChatButton/>
       </NavCheck>
       <Footer/>
     

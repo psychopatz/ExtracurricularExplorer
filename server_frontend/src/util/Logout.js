@@ -15,7 +15,6 @@ const Logout = () => {
     return (
         <div>
             <p>Logging out Please wait...</p>
-            
 
         </div>
         

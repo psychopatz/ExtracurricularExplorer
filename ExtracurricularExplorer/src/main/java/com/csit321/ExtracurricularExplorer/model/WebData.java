@@ -19,7 +19,7 @@ public class WebData {
     private String content;
 
     private Collection<String> img;
-    private String imgDetails;
+    private Collection<String> imgDetails;
 
     public WebData() {
     }

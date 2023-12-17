@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, TextField , Typography } from "@mui/material";
-import PhotoDisplayer from './component/PhotosDisplayer';
+import { Box, Button, TextField , Typography } from "@mui/material";
 import BarComponent from './component/BarComponent';
 import callApi from './hooks/callApi';
-import UploadImageBtn from './component/UploadImageBtn';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 
@@ -48,11 +46,19 @@ import styled from '@emotion/styled';
       
     }))
 
-const Account = () => {
+    const AccountBtn = styled(Button)(() =>({
+        fontWeight:800,
+        
+    
+        
+}))
+
+const Settings = () => {
     const navigate = useNavigate();
     const { REACT_APP_BACKEND_URL} = process.env;
     const userData = window.JSON.parse(localStorage.getItem('loginSession'))
     const [userInfo,setUserInfo] = useState(null)
+       
     
     const fetchData = async () => {
         const endpoint = "/account/user/"+userData.id; 
@@ -70,11 +76,7 @@ const Account = () => {
 
     }, []);
     document.title =  userData.firstName+" \'s Profile";    
-    const [userPhoto, setUserPhoto] = useState({
-                      img: REACT_APP_BACKEND_URL+'/image/fileSystem/' + userData.profilePicture,
-                      title: userData.firstName+" Profile"
-                  })
-   console.log("UserPhoto: ",userPhoto)
+
 //User Data
       const updateUser = async () => {
           const endpoint = "/account/user/"+userData.id;
@@ -99,17 +101,41 @@ const Account = () => {
           }
 };
 
+const deleteUser = async () => {
+          const endpoint = "/account/user/"+userData.id;
+          const method = 'DELETE';
+          console.log("UserInfo: ",userInfo)
 
-//Upload Photo
-  const handleUploadComplete = (responseData) => {
-      console.log(responseData)
-      let newData = {...userData};
-      console.log("NewData: ",newData)
-      newData.profilePicture = responseData.replace("file uploaded successfully : ","")
-      setUserInfo(newData)
-      updateUser()
+          try {
+            const response = await callApi(endpoint, method);
+
+            if (response.status === 200) {
+              console.log('User Deleted Successfully:', response.data);
+              navigate("/logout")
+              
+
+            } else {
+              console.error('Failed to update user:', response.data);
+
+            }
+          } catch (error) {
+            console.error('Error updating user:', error.message);
+          }
+};
+
+    const handleInput = (e)=>{
+        console.log("HandleInput: "+ e)
+        const newData = {...userData};
+        newData[e.target.name] = e.target.value;
+        setUserInfo(newData);
+        console.log(userInfo)
+        console.log(newData)
 
     };
+
+    
+
+
 
 
     return (  
@@ -122,69 +148,82 @@ const Account = () => {
                 <AccountText
                 align='center'
 
-                >{userData.firstName}'s Profile
+                >Account Settings
                 </AccountText>
 
-                <PhotoDisplayer 
-                  photos={userPhoto}
-                  placeholderType= {userData.gender}
-                  size={{ xs: 22, sm: 16, md: 13 }}
-                  height = "1000px"
-                  />
                 <AccountCanvas>
                 
                 <AccountContent>
                   <AccountField
-                    disabled
                     label="First Name:"
+                    name="firstName"
+                    onChange={handleInput}
                     defaultValue={userData.firstName}
                   />
                   <AccountField
-                    disabled
                     label="Last Name:"
+                    name="lastName"
+                    onChange={handleInput}
                     defaultValue={userData.lastName}
                   />
                   <AccountField
-                    disabled
-                    label="Gender:"
-                    defaultValue={userData.gender}
+                    label="Password:"
+                    name= "password"
+                    onChange={handleInput}
+                    defaultValue={userData.password}
                   />
                 </AccountContent>
                 <AccountContent>
                   <AccountField
-                    disabled
                     label="Email:"
+                    name="email"
+                    onChange={handleInput}
                     defaultValue={userData.email}
                   />
                   <AccountField
-                    disabled
                     label="School ID:"
+                    name="schoolId"
+                    onChange={handleInput}
                     defaultValue={userData.schoolId}
                   />
                   <AccountField
-                    disabled
                     label="Department:"
+                    name= "department"
+                    onChange={handleInput}
                     defaultValue={userData.department}
                   />
 
                 </AccountContent>
 
                 <AccountContent>
-                  <AccountField
-                    disabled
-                    label="Date Joined:"
-                    defaultValue={userData.dateJoined}
-                  />
+                    <AccountBtn
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            onClick={updateUser}
+                        >
+                            Submit
+                        </AccountBtn>
+                        <AccountBtn
+                        type="button"
+                        variant="contained"
+                        color="primary"
+                        onClick={deleteUser}
+                        >
+                            Delete Account
+                        </AccountBtn>
                   </AccountContent>
-               
+                  <AccountContent>
+                    
+                  </AccountContent>
+                        
                 </AccountCanvas>
+                
+                
 
                 </>)
                   
                 }
-                <AccountContent>
-                     <UploadImageBtn onUploadComplete={handleUploadComplete}/>
-                  </AccountContent>
                 </Box>
           
           <BarComponent/>
@@ -198,4 +237,4 @@ const Account = () => {
     );
 }
 
-export default Account;
+export default Settings;
