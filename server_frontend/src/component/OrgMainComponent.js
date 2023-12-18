@@ -35,7 +35,7 @@ const ImgPlaceholder = styled(Box)(() =>({
 }))
 
 const OrgButton = styled(Button)(({theme}) =>({
-    width: "50%",
+    width: 100,
     height: "30%",
     left:"30%",
     backgroundColor: theme.palette.primary.main,
@@ -53,6 +53,7 @@ const OrgMainComponent = ({org}) => {
     // private String name;
     // private String acronym;
     // private String logo;
+    console.log("OrgMainData: ",org)
     
     
     return ( 
@@ -71,7 +72,7 @@ const OrgMainComponent = ({org}) => {
                 <OrgDesc>{org.name}</OrgDesc>
                 <OrgButton
                 variant="contained"
-                onClick={()=>{navigate("/organization/data/"+org.orgDataID)}}
+                onClick={()=>{navigate("/organization/data/"+org.id)}}
                 >
                     READ MORE
 

@@ -1,7 +1,10 @@
 import styled from "@emotion/styled";
 import { Box, Button, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import callApi from "../hooks/callApi";
 import ColoredBarComponent from "./ColoredBarComponent";
+import DeleteOrgBtn from "./DeleteOrgBtn";
 import PhotoDisplayer from "./PhotosDisplayer";
 
 const screenWidth = window.innerWidth * 0.5;
@@ -61,7 +64,9 @@ const OrgProcessContent = styled(Typography)(()=>(()=> ({
     whiteSpace: "pre"
 })))
 
-const OrgContentComponent = (orgData = null) => {
+const OrgContentComponent = () => {
+    const [orgData,setOrgData] = useState(null)
+    let orgPhotos = null
     
     // private int id;
     // private int orgID;
@@ -69,64 +74,90 @@ const OrgContentComponent = (orgData = null) => {
     // private String orgRegisterLink;
     // private String orgBanner;
     // private Collection<String> orgPhotos;
+    console.log("Org Component: ",orgData)
     const { REACT_APP_APP_URL,REACT_APP_BACKEND_URL,REACT_APP_LLM_URL } = process.env;
     const {id} = useParams();
+
+    const fetchData = async () => {
+        const endpoint = "/org/"+id; 
+        try {
+          const response = await callApi(endpoint, 'GET');
+          setOrgData(response.data)
+          orgPhotos = orgData.orgPhotos.split(",")
+          console.log('Server Data:', orgData);
+        } catch (error) {
+          console.error('Error fetching data:', error.message);
+        }
+  };
+
+    useEffect(() => {
+        fetchData()
+
+    }, []);
+
+
+
     
-    const itemData = {
-        orgDetails: "TO BE A PREMIER COLLEGE OF NURSING AND TO EDUCATE AND EMPOWER\nA DIVERSE POPULATION OF NURSE LEADERS",
-        orgRegisterLink: "https://forms.microsoft.com/Pages/ShareFormPage.aspx?id=v4j5cvGGr0GRqy180BHbR5rJw75GAkhJr6UOYlwk6LBURjJCTUVHRDVCUUZQSk8xOTZTMEhYSEVJSSQlQCN0PWcu&sharetoken=jvdv85oD4twB3kr6ha7q",
-        orgBanner: REACT_APP_BACKEND_URL+"/image/fileSystem/charles.jpg",
-        orgPhotos: [{
-                    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-                    title: 'Camera',
-                    },
-                    {
-                    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-                    title: 'Coffee',
-                    },
-                    {
-                    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-                    title: 'Hats',
-                    },
-                    {
-                    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-                    title: 'Camera',
-                    },
-                    {
-                    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-                    title: 'Coffee',
-                    },
-                    {
-                    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-                    title: 'Hats',
-                    }
-                    ]
-    }
+
+    console.log(orgPhotos)
+
+    
+    // const orgData = {
+    //     orgDetails: "TO BE A PREMIER COLLEGE OF NURSING AND TO EDUCATE AND EMPOWER\nA DIVERSE POPULATION OF NURSE LEADERS",
+    //     orgRegisterLink: "https://forms.microsoft.com/Pages/ShareFormPage.aspx?id=v4j5cvGGr0GRqy180BHbR5rJw75GAkhJr6UOYlwk6LBURjJCTUVHRDVCUUZQSk8xOTZTMEhYSEVJSSQlQCN0PWcu&sharetoken=jvdv85oD4twB3kr6ha7q",
+    //     orgBanner: REACT_APP_BACKEND_URL+"/image/fileSystem/charles.jpg",
+    //     orgPhotos: [{
+    //                 img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+    //                 title: 'Camera',
+    //                 },
+    //                 {
+    //                 img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+    //                 title: 'Coffee',
+    //                 },
+    //                 {
+    //                 img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+    //                 title: 'Hats',
+    //                 },
+    //                 {
+    //                 img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
+    //                 title: 'Camera',
+    //                 },
+    //                 {
+    //                 img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
+    //                 title: 'Coffee',
+    //                 },
+    //                 {
+    //                 img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
+    //                 title: 'Hats',
+    //                 }
+    //                 ]
+    // }
 
 
 
     return (
-        <OrgBox>
-            <p>{id}</p>
+        <>
+        {orgData && (
+            <OrgBox>
             <ImgPlaceholder 
                 component="img"
                 alt="testIcon"
-                src={itemData.orgBanner}
+                src={orgData.orgBanner}
             />
             <OrgTitle
             align="center"
-            >{itemData.orgDetails}
+            >{orgData.orgDetails}
             </OrgTitle>
 
-            <PhotoDisplayer 
-            photos = {itemData.orgPhotos}
-            />
+            {/* <PhotoDisplayer 
+            photos = {orgData.orgPhotos}
+            /> */}
 
             <SignupButton
                     type="submit"
                     variant="contained"
                     color="primary"
-                    onClick={()=>{window.location.replace(itemData.orgRegisterLink)}}
+                    onClick={()=>{window.location.replace(orgData.orgRegisterLink)}}
             >
                     Register Now!
             </SignupButton>
@@ -191,15 +222,11 @@ const OrgContentComponent = (orgData = null) => {
                     </OrgProcess>
 
                 </OrgCanvasProcess>  
+                <DeleteOrgBtn />
             </ColoredBarComponent>
-
-
-                    
-                
-
-            
-
         </OrgBox>
+        )}
+        </>
         
       );
 }

@@ -37,6 +37,8 @@ const SignupButton = styled(Button)(() =>({
     paddingLeft:"10%",
     paddingRight:"10%",
     fontWeight:800,
+    height: 30,
+    width: 40
     
     
         
@@ -44,7 +46,7 @@ const SignupButton = styled(Button)(() =>({
 
 const ImagePlaceholder = styled(Box)(() =>({
     width: "auto%",
-    height: "8%",
+    height: 100,
     
     
         
@@ -151,7 +153,14 @@ const OrganizationNew = () => {
                 <InputFieldComponent 
                 name="acronym"
                 type="text"
-                label="Acronym:"
+                label="Organization Acronym:"
+                sx ={OrgTextField} 
+                onChange={handleInput}
+                />
+                <InputFieldComponent 
+                name="logo"
+                type="text"
+                label="Organization Logo Name Link:"
                 sx ={OrgTextField} 
                 onChange={handleInput}
                 />
@@ -159,7 +168,7 @@ const OrganizationNew = () => {
                 <InputFieldComponent 
                 name="orgDetails"
                 type="multiline"
-                label="orgDetails:"
+                label="Organization Details:"
                 sx ={OrgTextField} 
                 onChange={handleInput}
                 />
@@ -173,14 +182,14 @@ const OrganizationNew = () => {
                 <InputFieldComponent 
                 name="orgBanner"
                 type="text"
-                label="Banner Name:"
+                label="Banner Name Link:"
                 sx ={OrgTextField} 
                 onChange={handleInput}
                 />
                 <InputFieldComponent 
                 name="orgPhotos"
                 type="multiline"
-                label="Photo's Name:(Separate it with comma)"
+                label="Photo's Link Name:(Separate it with comma)"
                 sx ={OrgTextField} 
                 onChange={handleInput}
                 />
@@ -196,7 +205,7 @@ const OrganizationNew = () => {
                 </SignupButton>
                 <Box>
                     <ImagePlaceholder component="img" src={REACT_APP_BACKEND_URL+"/image/fileSystem/"+picture}/>
-                    <Typography>Copy this Filename:{picture}</Typography>
+                    <Typography>Copy this Filename: {picture}</Typography>
                     <UploadImageBtn onUploadComplete={handleUploadComplete}/>
 
                 </Box>
