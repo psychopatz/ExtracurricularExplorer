@@ -31,8 +31,6 @@ const SignupButton = styled(Button)(() =>({
     paddingLeft:"10%",
     paddingRight:"10%",
     fontWeight:800,
-    
-    
         
 }))
 
