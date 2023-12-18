@@ -108,8 +108,6 @@ const OrganizationNew = () => {
 
             if (response.status === 200) {
                console.log("Data: "+response.data)
-               const apiResponse = await callApi(endpoint, 'POST', data);
-               console.log('API ResponseEz:', apiResponse);
                console.log("UserData: "+userData)
                navigate('/organization');
                

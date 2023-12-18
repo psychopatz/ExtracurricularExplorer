@@ -46,6 +46,7 @@ const OrgButton = styled(Button)(({theme}) =>({
 }))
 
 const OrgMainComponent = ({org}) => {
+    const { REACT_APP_APP_URL,REACT_APP_BACKEND_URL,REACT_APP_LLM_URL } = process.env;
     const navigate = useNavigate()
     
     // private int id;
@@ -62,7 +63,7 @@ const OrgMainComponent = ({org}) => {
             <ImgPlaceholder
             component="img"
             alt="orgIcon" 
-            src={org.logo}
+            src={REACT_APP_BACKEND_URL+"/image/fileSystem/"+org.logo}
             />
             <Box sx={{
                 height: "auto",

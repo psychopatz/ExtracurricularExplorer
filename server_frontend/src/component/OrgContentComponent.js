@@ -66,7 +66,7 @@ const OrgProcessContent = styled(Typography)(()=>(()=> ({
 
 const OrgContentComponent = () => {
     const [orgData,setOrgData] = useState(null)
-    let orgPhotos = null
+    const [orgPhotos,setOrgPhotos] = useState([])
     
     // private int id;
     // private int orgID;
@@ -78,22 +78,50 @@ const OrgContentComponent = () => {
     const { REACT_APP_APP_URL,REACT_APP_BACKEND_URL,REACT_APP_LLM_URL } = process.env;
     const {id} = useParams();
 
+
+    const extractPhoto = () => {
+        let tempData = []
+        let items = orgData.orgPhotos.split(",")
+        console.log("Items: ",items)
+        items.map((item) => (tempData.push(
+            {img: REACT_APP_BACKEND_URL+"/image/fileSystem/"+item,
+            title: item
+        })))
+        setOrgPhotos(tempData)
+        console.log("Photo Items: ", tempData)
+        
+    }
+
     const fetchData = async () => {
         const endpoint = "/org/"+id; 
         try {
           const response = await callApi(endpoint, 'GET');
           setOrgData(response.data)
-          orgPhotos = orgData.orgPhotos.split(",")
+          console.log("Response: ",response)
+          
+
           console.log('Server Data:', orgData);
         } catch (error) {
           console.error('Error fetching data:', error.message);
         }
   };
+  
 
     useEffect(() => {
         fetchData()
+        
 
     }, []);
+
+    useEffect(() => {
+        if(orgData){
+            extractPhoto()
+
+        }
+        
+
+    }, [orgData]);
+    
 
 
 
@@ -142,16 +170,18 @@ const OrgContentComponent = () => {
             <ImgPlaceholder 
                 component="img"
                 alt="testIcon"
-                src={orgData.orgBanner}
+                src={REACT_APP_BACKEND_URL+"/image/fileSystem/"+orgData.orgBanner}
             />
             <OrgTitle
             align="center"
             >{orgData.orgDetails}
             </OrgTitle>
 
-            {/* <PhotoDisplayer 
-            photos = {orgData.orgPhotos}
-            /> */}
+           
+            <PhotoDisplayer 
+                photos = {orgPhotos}
+            />
+            
 
             <SignupButton
                     type="submit"
